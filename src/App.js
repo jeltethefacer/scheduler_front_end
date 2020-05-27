@@ -48,7 +48,7 @@ function App() {
 
         <Switch>
           <Route path="/login" render={() =>
-            loginInformation.loggedIn ? <Redirect to="/user" /> : <LoginForm />
+            loginInformation.loggedIn ? <Redirect to="/" /> : <LoginForm />
           } />
 
           <Route path="/timeslot/create" render={() =>

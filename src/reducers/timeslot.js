@@ -2,7 +2,8 @@
 const defaultState = {
     timeslots: [],
     errorCode: "",
-    succes: false
+    succes: false,
+    errorInfo: ""
 }
 
 const timeslotReducer = (state = defaultState, action) => {
@@ -42,7 +43,8 @@ const timeslotReducer = (state = defaultState, action) => {
         case "TIMESLOT_ERROR":
             return {
                 ...state,
-                errorCode: action.data.errorCode
+                errorCode: action.data.errorCode,
+                errorInfo: action.data.errorInfo
             }
         case "RESET_SUCCES_TIMESLOT" :
             return {

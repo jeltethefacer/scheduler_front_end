@@ -12,13 +12,15 @@ import moderatorReducer from './reducers/moderator';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import timeslotReducer from './reducers/timeslot';
+import timeslotCategorieReducer from './reducers/timeslotCategorie';
 
 const store = createStore(combineReducers({
   login: loginReducer,
   roles: roleReducer,
   user: userReducer,
   moderator: moderatorReducer,
-  timeslot: timeslotReducer
+  timeslot: timeslotReducer,
+  timeslotCategorie: timeslotCategorieReducer
 }),
   applyMiddleware(thunk)
 )

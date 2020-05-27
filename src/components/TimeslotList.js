@@ -1,40 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { getTimeslots, subscribeTimeslot, unSubscribe , deleteTimeslot} from '../actions/timeslot';
+import { getTimeslots } from '../actions/timeslot';
 import { getRoleList } from '../actions/role';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardHeader, CardContent, Typography, CardActions, Button, Grid, List, ListItem, ListItemText, ButtonGroup } from '@material-ui/core';
 
-import { formatDateForCard } from "../utils/timeFormat"
 import { errorCodeFormatting } from '../utils/errorCodeFormatting';
 import { getUserInformation } from '../actions/user';
-import { checkRole } from '../utils/checkRole';
-
+import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
+import TimeslotCards from "./TimeslotCards"
+import { checkTimeslotCategorie } from '../utils/checkRole';
 
 function TimeslotList() {
     const dispatch = useDispatch()
 
+
+
     const timeslots = useSelector(state => state.timeslot.timeslots)
     const roles = useSelector(state => state.roles)
-    const userRoles = useSelector(state => state.user.roles)
-
-
-    const errorCodeTimeslot = useSelector(state => state.timeslot.errorCode)
+    const userInformation = useSelector(state => state.user)
+    const timeslotCategories = useSelector(state => state.timeslotCategorie.timeslotCategories)
+    const timeslotStatus = useSelector(state => state.timeslot)
     const token = useSelector(state => state.login.token)
-
-
-
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            width: 400,
-            height: 200,
-        }
-    }));
-
-    const classes = useStyles();
-
-
 
 
     useEffect(() => {
@@ -42,107 +28,81 @@ function TimeslotList() {
             dispatch(getTimeslots(token))
             dispatch(getRoleList(token))
             dispatch(getUserInformation(token))
+            dispatch(getTimeslotCategorieList(token))
         }
     }, [dispatch, token])
 
-    const mapTimeslots = (timeslots, roles) => {
-        return <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="center"
-        >
-            {timeslots.map(timeslot => {
-                const startTimeDate = new Date(timeslot.startTime)
-                const endTimeDate = new Date(timeslot.endTime)
-  
-                const returnElement = 
-                <Card key={timeslot.id}>
-                    <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={timeslot.description} className={classes.root} />
-                    <CardContent>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6" className={classes.title}>
-                                    Roles
-                                </Typography>
-                                <List dense={true}>
-                                    {timeslot.roles.map((roleId) => {
-                                        const role = findRoleById(roles, roleId)
+    const sortOptions = [
+        {
+            value: "startTime",
+            name: "start tijd"
+        },
+        {
+            value: "endTime",
+            name: "eind tijd"
+        },
+        {
+            value: "usersRising",
+            name: "hoeveelheid aangemeld stijdend"
+        },
+        {
+            value: "usersDecreasing",
+            name: "hoeveelheid aangemeld dalend"
+        }
+    ]
 
-                                        return <ListItem key={roleId}>
-                                            <ListItemText
-                                                primary={role.abreviation}
-                                            />
-                                        </ListItem>
-                                    })}
-                                </List>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6" className={classes.title}>
-                                    Users
-                                </Typography>
-                                <List dense={true}>
-                                    {timeslot.subscribed.map((userId) => {
+    const [sortOption, setSortOption] = useState(sortOptions[0].value)
 
-                                        return <ListItem key={userId}>
-                                            <ListItemText
-                                                primary={userId}
-                                            />
-                                        </ListItem>
-                                    })}
-                                </List>
-                            </Grid>
-                        </Grid>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {`${timeslot.subscribed.length}/${timeslot.maxPeople}`}<br />
-                        </Typography>
-
-                    </CardContent>
-
-                    <CardActions>
-                        <ButtonGroup>
-                            <Button onDoubleClick={() =>  dispatch(subscribeTimeslot(token, timeslot.id)) } color="primary">
-                                Meld mij aan
-                            </Button>
-                            <Button onDoubleClick={() =>  dispatch(unSubscribe(token, timeslot.id))       } color="secondary">
-                                unSubscribe
-                            </Button>
-                            {checkRole(userRoles, "createTimeslots") ? <Button onDoubleClick={() =>  dispatch(deleteTimeslot(token, timeslot.id))       } color="secondary">
-                                delete
-                            </Button> : ""}
-                        </ButtonGroup>
-                    </CardActions>
-                </Card>
-
-                return returnElement
-            })}
-        </Grid>
+    const onSelectSortChange = (event) => {
+        setSortOption(event.target.value)
     }
 
-    const errorText = (errorCode) => {
+
+
+    const errorText = (errorCode, errorInfo = "") => {
         switch (errorCode) {
             case "TIMESLOT_FULL":
                 return "time slot full please fuck off"
             case "NO_VALID_ROLE":
                 return "you do not have the required role to subscribe to this timeslot please contact the moderator if you think this is an error."
+            case "TIME_ERROR":
+                return `The time to cancel your appointment has sadly passed contact the COMBAR in case you really can't tap you need to cancel atleast ${errorInfo} hours in advance`
+
             default:
                 return <div></div>
         }
     }
 
-    const findRoleById = (rolesArray, roleId) => {
-        return rolesArray.filter(role => role.id === roleId)[0]
-    }
 
-    if (timeslots && roles.length !== 0) {
+    var groupBy = function (xs, key) {
+        return xs.reduce(function (rv, x) {
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+        }, {});
+    };
+
+
+    if (timeslots && roles.length !== 0 && timeslotCategories.length !== 0 && userInformation.user) {
+        const groupedTimeslots = groupBy(timeslots, "timeslotCategorie")
         return (
             <div>
-                {errorCodeFormatting(errorCodeTimeslot, errorText)}
-                {mapTimeslots(timeslots, roles)}
+                <select onChange={onSelectSortChange} value={sortOption}>
+                    {sortOptions.map((option) => {
+                        return <option key={option.value} value={option.value}>{option.name}</option>
+                    })}
+                </select>
+                {errorCodeFormatting(timeslotStatus.errorCode, errorText, timeslotStatus.errorInfo)}
+                {
+                    Object.keys(groupBy(timeslots, "timeslotCategorie")).map((categorie) => {
+                        return <div key={categorie}>
+                            <h2>{checkTimeslotCategorie(timeslotCategories, categorie).title}</h2>
+                            <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.id} roleList={roles} sortingOption={sortOption} token={token} />
+                        </div>
+                    })
+                }
             </div>
         )
     }
-
     return <div></div>
 }
 

@@ -4,6 +4,7 @@ import { getUserInformation } from "../actions/user"
 
 import UserInformation from "./UserInformation"
 import UserList from "./UserList"
+import TimeslotCategorieForm from './TimeslotCatogorieForm';
 
 function Moderator() {
     const dispatch = useDispatch()
@@ -19,6 +20,7 @@ function Moderator() {
         <div>
             <UserInformation/>
             <UserList/>
+            <TimeslotCategorieForm/>
         </div>
     )
 }

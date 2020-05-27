@@ -3,7 +3,7 @@ import {config} from "../utils/config"
 
 const baseUrl = `${config().url}/api/timeslot`
 
-export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles) => {
+export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles, timeslotCategorie) => {
     return async dispatch => {
         try {
             const user = await Axios.post(`${baseUrl}`,
@@ -12,7 +12,8 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                     startTime: startTime,
                     endTime: endTime,
                     maxPeople: maxPeople,
-                    roles: roles
+                    roles: roles,
+                    timeslotCategorie: timeslotCategorie
                 },
                 {
                     headers: {
@@ -22,7 +23,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
             )
             const timeslotData = user.data
 
-            setInterval(() => {
+            setTimeout(() => {
                 dispatch({
                     type: "RESET_SUCCES_TIMESLOT"
                 })
@@ -43,7 +44,8 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                     dispatch({
                         type: "TIMESLOT_ERROR",
                         data: {
-                            errorCode: error.response.data.errorCode
+                            errorCode: error.response.data.errorCode,
+                            errorInfo: error.response.data.errorInfo
                         } 
                     })
                     break

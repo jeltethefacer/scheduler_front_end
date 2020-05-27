@@ -6,3 +6,14 @@ export const checkRole = (userRoles, checkRole) => {
     }
     return false
 }
+
+export const checkTimeslotCategorie = (categorieList, categorieId) => {
+
+
+    for (const index in categorieList) {
+        if(categorieList[index].id === categorieId) {
+            return categorieList[index]
+        }
+    }
+    return null
+}

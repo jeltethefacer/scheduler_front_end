@@ -8,9 +8,14 @@ import {errorCodeFormatting} from "../utils/errorCodeFormatting"
 import { getRoleList } from '../actions/role';
 
 import {Alert} from "@material-ui/lab"
+import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
 
 function TimeslotForm() {
-
+    const token = useSelector(state => state.login.token)
+    const roles = useSelector(state => state.roles)
+    const timeslotCategories = useSelector(state => state.timeslotCategorie.timeslotCategories)
+    const errorCode = useSelector(state => state.timeslot.errorCode)
+    const successTimeslot = useSelector(state => state.timeslot.succes)
 
 
     const [description, setDescription] = useState("")
@@ -18,19 +23,17 @@ function TimeslotForm() {
     const [endTime, setEndTime] = useState(new Date())
     const [maxPeople, setMaxPeople] = useState(1)
     const [roleSelection, setRoleSelection] = useState([])
+    const [categorieSelection, setCategorieSelection] = useState("")
 
-    const token = useSelector(state => state.login.token)
-    const roles = useSelector(state => state.roles)
-    const errorCode = useSelector(state => state.timeslot.errorCode)
-    const successTimeslot = useSelector(state => state.timeslot.succes)
+
+
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log("reload roles")
-
         dispatch(getRoleList())
-    }, [dispatch])
+        dispatch(getTimeslotCategorieList(token))
+    }, [dispatch, token])
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value)
@@ -107,9 +110,20 @@ function TimeslotForm() {
         }
     }
 
+    const handleCategorieSelectionChange = (event) => {
+        setCategorieSelection(event.target.value)
+    }
+
     const handleSubmit = (event) => {
         console.log(startTime)
-        dispatch(addTimeslot(token, description, startTime, endTime, maxPeople, roleSelection))
+        //if the categorie is not changed set the first categorie in the list
+        if(categorieSelection === "" && !categorieSelection) {
+            dispatch(addTimeslot(token, 
+                description, startTime, endTime,
+                 maxPeople, roleSelection, timeslotCategories[0].id))
+        } else {
+            dispatch(addTimeslot(token, description, startTime, endTime, maxPeople, roleSelection, categorieSelection))
+        }
         event.preventDefault()
 
     }
@@ -135,8 +149,11 @@ function TimeslotForm() {
 
     const endTimeDateString = toDateString(endTime)
     const endTimeTimeString = toTimeString(endTime)
-    console.log(errorCode)
-    if (roles) {
+    console.log(categorieSelection, errorCode)
+
+
+
+    if (roles.length !== 0 && timeslotCategories !== 0) {
         return (
             <div>
                 {errorCodeFormatting(errorCode, errorText)}
@@ -155,6 +172,13 @@ function TimeslotForm() {
                         {
                             roles.map((role) => {
                                 return <option key={role.id} value={role.id}>{role.abreviation}: {role.description}</option>
+                            })
+                        }
+                    </select>
+                    <select value={categorieSelection} onChange={handleCategorieSelectionChange}>
+                        {
+                            timeslotCategories.map((timeslotCategorie) => {
+                                return <option key={timeslotCategorie.id} value={timeslotCategorie.id}>{timeslotCategorie.title} minimum cancel times (hours): {timeslotCategorie.cancelLength}</option>
                             })
                         }
                     </select>
