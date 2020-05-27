@@ -37,6 +37,9 @@ function App() {
   if (loginInformation.pending) {
     return "pending...."
   }
+
+  console.log("Production is ", process.env.NODE_ENV)
+
   return (
       <Router>
 

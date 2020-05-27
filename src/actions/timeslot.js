@@ -1,6 +1,7 @@
 import Axios from "axios"
+import {config} from "../utils/config"
 
-const baseUrl = 'http://localhost:3001/api/timeslot'
+const baseUrl = `${config().url}/api/timeslot`
 
 export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles) => {
     return async dispatch => {

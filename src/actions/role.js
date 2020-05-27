@@ -1,6 +1,9 @@
 import Axios from "axios"
 
-const baseUrl = 'http://localhost:3001/api/role'
+import {config} from "../utils/config"
+
+const baseUrl = `${config().url}/api/role`
+
 
 export const getRoleList = () => {
     return async dispatch => {

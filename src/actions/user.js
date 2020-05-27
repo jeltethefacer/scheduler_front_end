@@ -1,6 +1,7 @@
 import Axios from "axios"
+import {config} from "../utils/config"
 
-const baseUrl = 'http://localhost:3001/api/user'
+const baseUrl = `${config().url}/api/user`
 
 export const getUserInformation = (token) => {
     return async dispatch => {

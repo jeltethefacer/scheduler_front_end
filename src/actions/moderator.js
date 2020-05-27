@@ -1,6 +1,9 @@
 import Axios from "axios"
 
-const baseUrl = 'http://localhost:3001/api/moderator'
+
+import {config} from "../utils/config"
+
+const baseUrl = `${config().url}/api/moderator`
 
 export const getUsers = (token) => {
     return async dispatch => {
