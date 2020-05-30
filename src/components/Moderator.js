@@ -6,6 +6,15 @@ import UserInformation from "./UserInformation"
 import UserList from "./UserList"
 import TimeslotCategorieForm from './TimeslotCatogorieForm';
 
+import AddUser from "./AddUser"
+
+import RoleList from "./RoleList"
+import AddRole from "./AddRole"
+import TimeslotCategorieList from './TimeslotCategorieList';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+
 function Moderator() {
     const dispatch = useDispatch()
     const token = useSelector(state => state.login.token)
@@ -18,9 +27,57 @@ function Moderator() {
 
     return (
         <div>
-            <UserInformation/>
-            <UserList/>
-            <TimeslotCategorieForm/>
+            <UserInformation />
+
+            <ExpansionPanel>
+                <ExpansionPanelSummary
+                    id="user_panel"
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                    Users
+                </ExpansionPanelSummary>
+
+                <ExpansionPanelDetails>
+                    <div>
+                        <UserList />
+                        <AddUser />
+                    </div>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+
+            <ExpansionPanel>
+                <ExpansionPanelSummary
+                    id="user_panel"
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                    Roles
+                </ExpansionPanelSummary>
+
+                <ExpansionPanelDetails>
+                    <div>
+                        <RoleList />
+                        <AddRole />
+                    </div>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+
+
+            <ExpansionPanel>
+                <ExpansionPanelSummary
+                    id="user_panel"
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                    Timeslot categories
+                </ExpansionPanelSummary>
+
+                <ExpansionPanelDetails>
+                    <div>
+                        <TimeslotCategorieList />
+                        <TimeslotCategorieForm />
+                    </div>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+
         </div>
     )
 }

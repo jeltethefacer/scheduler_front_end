@@ -37,7 +37,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                 }
             })
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
             
             switch (error.response.status) {
                 case 400: 

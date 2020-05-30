@@ -13,7 +13,7 @@ export const getUserInformation = (token) => {
             })
 
             const userData = user.data
-
+            
             dispatch({
                 type: "USER_INFORMATION",
                 data: {

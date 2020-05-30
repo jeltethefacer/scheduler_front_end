@@ -4,10 +4,9 @@ const moderatorReducer = (state = [], action) => {
             return action.data.userList
         case "ADD_USER": 
             return state.concat(action.data.user)
+        case "TOGGLE_CHAIRMAN":
         case "TOGGLE_ROLE":
             const newState = state.map(user => {
-                console.log(user.id, action.data.user.id) 
-
                 if(user.id === action.data.user.id) {
                     return action.data.user
                 }

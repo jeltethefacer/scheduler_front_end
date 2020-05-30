@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers, deleteUser, toggleRole } from "../actions/moderator"
+import { getUsers, deleteUser, toggleRole, toggleChairman } from "../actions/moderator"
 import { getRoleList } from "../actions/role"
 import "../css/dropdown.css"
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
-import AddUser from "./AddUser"
-import AddRole from "./AddRole"
 
 function UserList() {
     const dispatch = useDispatch()
@@ -30,49 +29,61 @@ function UserList() {
 
     function mapUsers() {
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>front name</th>
-                        <th>Last name</th>
-                        <th>Email</th>
-                        <th>ID</th>
-                        <th>roles</th>
-
-                    </tr>
-                </thead>
-                <tbody>
+            <TableContainer>
+                <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>front name</TableCell>
+                        <TableCell>Last name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>ID</TableCell>
+                        <TableCell>roles</TableCell>
+                        <TableCell>delete user</TableCell>
+                        <TableCell>change the user roles</TableCell>
+                        <TableCell>is voorzitter van</TableCell>
+                        <TableCell></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                     {
-                        users.map(user => <tr key={user.id}>
-                            <td>{user.frontName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.id}</td>
-                            <td>{user.roles.map(role => <div key={role}>{findRoleById(roles, role).abreviation}</div>)}</td>
-                            <td><button onClick={() => dispatch(deleteUser(token, user.id))}>Delete User</button></td>
-                            <td>
-                                <div className="dropdown">
-                                    <button className="dropbtn">Dropdown</button>
-                                    <div className="dropdown-content">
-                                        {roles.map(role => <button key={role.id} onClick={() => dispatch(toggleRole(token, role.id, user.id))}>{role.abreviation}</button>)}
+                        users.map(user => 
+                            <TableRow key={user.id}>
+                                <TableCell>{user.frontName}</TableCell>
+                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.id}</TableCell>
+                                <TableCell>{user.roles.map(role => <div key={role}>{findRoleById(roles, role).abreviation}</div>)}</TableCell>
+                                <TableCell><button onClick={() => dispatch(deleteUser(token, user.id))}>Delete User</button></TableCell>
+                                <TableCell>
+                                    <div className="dropdown">
+                                        <button className="dropbtn">Dropdown</button>
+                                        <div className="dropdown-content">
+                                            {roles.map(role => <button key={role.id} onClick={() => dispatch(toggleRole(token, role.id, user.id))}>{role.abreviation}</button>)}
+                                        </div>
                                     </div>
-                                </div>
-
-                            </td>
-                        </tr>)
+                                </TableCell>
+                                <TableCell>{user.chairman.map(role => <div key={role}>{findRoleById(roles, role).abreviation}</div>)}</TableCell>
+                                <TableCell>
+                                    <div className="dropdown">
+                                        <button className="dropbtn">Dropdown</button>
+                                        <div className="dropdown-content">
+                                            {roles.map(role => <button key={role.id} onClick={() => dispatch(toggleChairman(token, role.id, user.id))}>{role.abreviation}</button>)}
+                                        </div>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        )
                     }
-                </tbody>
-            </table>
+                </TableBody>
+                </Table>
+            </TableContainer>
         )
     }
 
     if (users && roles) {
         return (
             <div>
-
                 {mapUsers()}
-                <AddUser />
-                <AddRole />
             </div>
         )
     }

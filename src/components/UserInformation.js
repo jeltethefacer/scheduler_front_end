@@ -33,8 +33,6 @@ function UserInformation() {
                 
                 je rollen zijn
                 {userRoles ? mapRoles(userRoles) : " loading"}
-
-                Arthur {"<3"} 
             </div>
         )
     }

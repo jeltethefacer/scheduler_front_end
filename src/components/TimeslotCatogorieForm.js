@@ -55,11 +55,12 @@ function TimeslotCategorieForm() {
 
     return (
         <div>
+            <h2>Add timelslotCategorie</h2>
             {errorCodeFormatting(timeslotCategorieState.errorCode, errorText)}
             < form onSubmit={handleSubmit} >
                 title: <input type="text" value={title} onChange={handleTitleChange} /> <br />
-            cancle length (hours): <input type="number" min={0} value={cancelLength} onChange={handleCancelLengthChange} /><br />
-            subscribe length(hours): <input type="number" min={0} value={subscribeLength} onChange={handleSubscribeLengthChange} /><br />
+                cancle length (hours): <input type="number" min={0} value={cancelLength} onChange={handleCancelLengthChange} /><br />
+                subscribe length(hours): <input type="number" min={0} value={subscribeLength} onChange={handleSubscribeLengthChange} /><br />
                 <input type="submit" />
             </form >
         </div>

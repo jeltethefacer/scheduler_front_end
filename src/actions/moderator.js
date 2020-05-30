@@ -231,3 +231,58 @@ export const toggleRole = (token, roleId, userId) => {
         }
     }
 }
+
+export const toggleChairman = (token, roleId, userId) => {
+    return async dispatch => {
+        try {
+            const toggleChairmanResponse = await Axios.post(`${baseUrl}/toggleChairman`,
+                {
+                    roleId: roleId,
+                    userId: userId
+                },
+                {
+                    headers: {
+                        "authorization": `bearer ${token}`
+                    }
+                }
+            )
+            const userEntity = toggleChairmanResponse.data
+            //add role to role list
+            dispatch({
+                type: "TOGGLE_CHAIRMAN",
+                data: {
+                    user : userEntity
+                }    
+            })
+        } catch (error) {
+            console.log(error)
+            if(!error.response){
+                dispatch({
+                    type: "WEIRD_ERROR"
+                })
+                return;
+            }
+
+            switch (error.response.status) {
+                case 400: 
+                    dispatch({
+                        type: "TOGGLE_CHAIRMAN_ERROR",
+                        data: {
+                            erroCode: error.response.data.errorCode
+                        }
+                    })
+                    break
+                case 401:
+                    dispatch({
+                        type: "INVALID_TOKEN"
+                    })
+                    break
+                default:
+                    dispatch({
+                        type: "SERVER_ERROR"
+                    })
+                    break
+            }
+        }
+    }
+}

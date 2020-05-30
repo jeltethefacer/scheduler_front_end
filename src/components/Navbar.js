@@ -13,6 +13,7 @@ function Navbar() {
 
 
     const userRoles = useSelector(state => state.user.roles)
+    const user = useSelector(state => state.user.user)
     const token = useSelector(state => state.login.token)
     const dispatch = useDispatch()
 
@@ -27,8 +28,8 @@ function Navbar() {
         }
     }
 
-    const timeslotLink = (userRoles) => {
-        if(checkRole(userRoles, "createTimeslot")) {
+    const timeslotLink = (userRoles, chairman) => {
+        if(checkRole(userRoles, "createTimeslot") || (chairman && chairman.length !== 0)) {
             return <li className={"navbar_list_element"}><Link to="/timeslot/create" className={"navbar_link"}>create Timeslot</Link></li>
         }
     }
@@ -42,13 +43,12 @@ function Navbar() {
 
 
     //renders only if there is userinformation
-
     return (
         <ul className={"navbar_list"}>
             <li className={"navbar_list_element"}><Link to="/" className={"navbar_link"}>home </Link></li>
             <li className={"navbar_log_element"}> {loginOrLogout(loginInformation.loggedIn)} </li>
             {loginInformation.loggedIn? moderatorLink(userRoles) : ""}
-            {loginInformation.loggedIn? timeslotLink(userRoles) : ""}
+            {loginInformation.loggedIn? user ? timeslotLink(userRoles, user.chairman) : "" : ""}
             {loginInformation.loggedIn? <li className={"navbar_list_element"}><Link to="/timeslot" className={"navbar_link"}>timeslots</Link></li> : ""}
         </ul>
     )

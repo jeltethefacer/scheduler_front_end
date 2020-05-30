@@ -32,12 +32,15 @@ function AddUser() {
         setEmail("")
     }
     return (
-        < form onSubmit={handleSubmit} >
-            email: <input type="email" value={email} onChange={handleEmailChange} /> <br />
-            front name: <input type="text" value={frontName} onChange={handleFrontNameChange} /><br />
-            last name  <input type="text" value={lastName} onChange={handleLastNameChange} /><br />
-            <input type="submit" />
-        </form >
+        <div>
+            <h2>Add user</h2>
+            < form onSubmit={handleSubmit} >
+                email: <input type="email" value={email} onChange={handleEmailChange} /> <br />
+                front name: <input type="text" value={frontName} onChange={handleFrontNameChange} /><br />
+                last name  <input type="text" value={lastName} onChange={handleLastNameChange} /><br />
+                <input type="submit" />
+            </form >
+        </div>
     )
 }
 
