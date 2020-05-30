@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { setToken, noTokenStorage} from "./actions/login"
+import { verifyToken, noTokenStorage} from "./actions/login"
 
 import {
   BrowserRouter as Router,
@@ -24,11 +24,10 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
-      dispatch(setToken(token))
+      dispatch(verifyToken(token))
     } else {
       dispatch(noTokenStorage())
     }
-
   }, [dispatch])
 
   const loginInformation = useSelector(state => state.login)

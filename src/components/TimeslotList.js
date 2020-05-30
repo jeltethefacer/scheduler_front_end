@@ -96,7 +96,7 @@ function TimeslotList() {
                     Object.keys(groupBy(timeslots, "timeslotCategorie")).map((categorie) => {
                         return <div key={categorie}>
                             <h2>{checkTimeslotCategorie(timeslotCategories, categorie).title}</h2>
-                            <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.id} roleList={roles} sortingOption={sortOption} token={token} />
+                            <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.user.id} roleList={roles} sortingOption={sortOption} token={token} />
                         </div>
                     })
                 }

@@ -1,17 +1,19 @@
 import Axios from "axios"
 
-import {config} from "../utils/config"
+import { config } from "../utils/config"
 
 const baseUrl = `${config().url}/api/timeslotCategorie`
 
 
-export const addTimeslotCategorie = (token, title, cancelLength) => {
+export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
             const timeslotCategorie = await Axios.post(`${baseUrl}`,
                 {
                     title: title,
-                    cancelLength: cancelLength                },
+                    cancelLength: cancelLength,
+                    subscribeLength: subscribeLength
+                },
                 {
                     headers: {
                         "authorization": `bearer ${token}`
@@ -30,10 +32,12 @@ export const addTimeslotCategorie = (token, title, cancelLength) => {
         } catch (error) {
             console.log(error.response.data)
             switch (error.response.status) {
-                case 400: 
+                case 400:
                     dispatch({
                         type: "TIMESLOT_CATEGORIE_ERROR",
-                        errorCode: error.response.data.errorCode
+                        data: {
+                            errorCode: error.response.data.errorCode
+                        }
                     })
                     break
                 case 401:
@@ -73,10 +77,13 @@ export const getTimeslotCategorieList = (token) => {
         } catch (error) {
             console.log(error.response.data)
             switch (error.response.status) {
-                case 400: 
+                case 400:
                     dispatch({
                         type: "TIMESLOT_CATEGORIE_ERROR",
-                        errorCode: error.response.data.errorCode
+                        data: {
+                            errorCode: error.response.data.errorCode
+
+                        }
                     })
                     break
                 case 401:

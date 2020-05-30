@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { errorCodeFormatting } from '../utils/errorCodeFormatting';
-import {addTimeslotCategorie} from "../actions/timeslotCategorie"
+import { addTimeslotCategorie } from "../actions/timeslotCategorie"
 
 function TimeslotCategorieForm() {
     const dispatch = useDispatch()
@@ -11,18 +11,32 @@ function TimeslotCategorieForm() {
 
     const [title, setTitle] = useState("")
     const [cancelLength, setCancelLength] = useState(24)
+    const [subscribeLength, setSubscribeLength] = useState(0)
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value)
     }
 
     const handleCancelLengthChange = (event) => {
-        setCancelLength(event.target.value)
+        if (event.target.value !== "") {
+            setCancelLength(Number(event.target.value))
+        } else {
+            setCancelLength("")
+        }
+    }
+
+    const handleSubscribeLengthChange = (event) => {
+        if (event.target.value !== "") {
+            setSubscribeLength(Number(event.target.value))
+        } else {
+            setSubscribeLength("")
+        }
     }
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        dispatch(addTimeslotCategorie(token, title, cancelLength))
+        console.log(title, cancelLength, subscribeLength)
+        dispatch(addTimeslotCategorie(token, title, cancelLength, subscribeLength))
         setTitle("")
         setCancelLength(24)
     }
@@ -36,17 +50,18 @@ function TimeslotCategorieForm() {
                 return ""
         }
     }
-    
+
 
 
     return (
         <div>
             {errorCodeFormatting(timeslotCategorieState.errorCode, errorText)}
             < form onSubmit={handleSubmit} >
-            title: <input type="text" value={title} onChange={handleTitleChange} /> <br />
+                title: <input type="text" value={title} onChange={handleTitleChange} /> <br />
             cancle length (hours): <input type="number" min={0} value={cancelLength} onChange={handleCancelLengthChange} /><br />
-            <input type="submit" />
-        </form >
+            subscribe length(hours): <input type="number" min={0} value={subscribeLength} onChange={handleSubscribeLengthChange} /><br />
+                <input type="submit" />
+            </form >
         </div>
     )
 }

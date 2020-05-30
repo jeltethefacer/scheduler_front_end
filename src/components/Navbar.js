@@ -28,7 +28,7 @@ function Navbar() {
     }
 
     const timeslotLink = (userRoles) => {
-        if(checkRole(userRoles, "createTimeslots")) {
+        if(checkRole(userRoles, "createTimeslot")) {
             return <li className={"navbar_list_element"}><Link to="/timeslot/create" className={"navbar_link"}>create Timeslot</Link></li>
         }
     }

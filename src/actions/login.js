@@ -1,5 +1,5 @@
 import Axios from "axios"
-import {config} from "../utils/config"
+import { config } from "../utils/config"
 
 const baseUrl = `${config().url}/api/user/login`
 
@@ -8,7 +8,6 @@ export const login = (email, password) => {
         try {
             const user = await Axios.post(baseUrl, { email: email, password: password })
             const userData = user.data
-
             localStorage.setItem("token", userData.token)
             dispatch({
                 type: "LOGIN",
@@ -37,12 +36,39 @@ export const login = (email, password) => {
     }
 }
 
-export const setToken = (token) => {
-    return {
-        type: "LOGIN",
-        data: {
-            token: token
+export const verifyToken = (token) => {
 
+    return async dispatch => {
+        try {
+            await Axios.post(`${baseUrl}/verify`,
+                {},
+                {
+                    headers: {
+                        "authorization": `bearer ${token}`
+                    }
+                }
+            )
+
+            dispatch({
+                type: "LOGIN",
+                data: {
+                    token: token
+                }
+            })
+        } catch (error) {
+            switch (error.response.status) {
+                case 401:
+                    localStorage.clear()
+                    dispatch({
+                        type: "NO_TOKEN"
+                    })
+                    break
+                default:
+                    dispatch({
+                        type: "SERVER_ERROR"
+                    })
+                    break
+            }
         }
     }
 }

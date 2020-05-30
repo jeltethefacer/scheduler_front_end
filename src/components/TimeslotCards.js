@@ -109,7 +109,9 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
 
                     <CardActions>
                         <ButtonGroup>
+                            {console.log(timeslot.subscribed, userId)}
                             {
+                            
                                 !timeslot.subscribed.includes(userId) ?
                                     <Button onDoubleClick={() => dispatch(subscribeTimeslot(token, timeslot.id))} color="primary">
                                         Meld mij aan
@@ -118,7 +120,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                                         unSubscribe
                             </Button>
                             }
-                            {checkRole(userRoles, "createTimeslots") ? <Button onDoubleClick={() => dispatch(deleteTimeslot(token, timeslot.id))} color="secondary">
+                            {checkRole(userRoles, "createTimeslot") ? <Button onDoubleClick={() => dispatch(deleteTimeslot(token, timeslot.id))} color="secondary">
                                 delete
                         </Button> : ""}
                         </ButtonGroup>
