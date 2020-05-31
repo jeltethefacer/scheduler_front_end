@@ -15,6 +15,7 @@ import TimeslotForm from './components/TimeslotForm';
 import TimeslotList from './components/TimeslotList';
 import UserInformation from './components/UserInformation';
 import Navbar from './components/Navbar';
+import TimeslotCategorieForm from './components/TimeslotCatogorieForm';
 
 
 
@@ -46,6 +47,9 @@ function App() {
 
 
         <Switch>
+          <Route path="/timeslotcategorie/edit/:timeslotCategorieId"
+            component={TimeslotCategorieForm}
+          />
           <Route path="/login" render={() =>
             loginInformation.loggedIn ? <Redirect to="/" /> : <LoginForm />
           } />

@@ -47,7 +47,7 @@ function Moderator() {
 
             <ExpansionPanel>
                 <ExpansionPanelSummary
-                    id="user_panel"
+                    id="roles_panel"
                     expandIcon={<ExpandMoreIcon />}
                 >
                     Roles
@@ -64,7 +64,7 @@ function Moderator() {
 
             <ExpansionPanel>
                 <ExpansionPanelSummary
-                    id="user_panel"
+                    id="timeslot_categories_panel"
                     expandIcon={<ExpandMoreIcon />}
                 >
                     Timeslot categories

@@ -9,6 +9,9 @@ import { getUserInformation } from '../actions/user';
 import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
 import TimeslotCards from "./TimeslotCards"
 import { checkTimeslotCategorie } from '../utils/checkRole';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 
 function TimeslotList() {
     const dispatch = useDispatch()
@@ -92,12 +95,23 @@ function TimeslotList() {
                     })}
                 </select>
                 {errorCodeFormatting(timeslotStatus.errorCode, errorText, timeslotStatus.errorInfo)}
+
                 {
                     Object.keys(groupBy(timeslots, "timeslotCategorie")).map((categorie) => {
-                        return <div key={categorie}>
-                            <h2>{checkTimeslotCategorie(timeslotCategories, categorie).title}</h2>
-                            <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.user.id} roleList={roles} sortingOption={sortOption} token={token} />
-                        </div>
+                        return <ExpansionPanel key={categorie}>
+                            <ExpansionPanelSummary
+                                id={`${categorie}_panel`}
+                                expandIcon={<ExpandMoreIcon />}
+                            >
+                                <Typography variant="h5" component="h2">
+                                    {  checkTimeslotCategorie(timeslotCategories, categorie).title}
+                                </Typography>
+                            </ExpansionPanelSummary>
+
+                            <ExpansionPanelDetails>
+                                <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.user.id} roleList={roles} sortingOption={sortOption} token={token} />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                     })
                 }
             </div>
