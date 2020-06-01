@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, createContext, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { verifyToken, noTokenStorage} from "./actions/login"
 
@@ -17,10 +17,15 @@ import UserInformation from './components/UserInformation';
 import Navbar from './components/Navbar';
 import TimeslotCategorieForm from './components/TimeslotCatogorieForm';
 
+import translations from "./translations.json"
+
+export const languageContext = createContext()
 
 
 function App() {
   const dispatch = useDispatch()
+
+  const language= useSelector(state => state.l18n.language)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -41,41 +46,40 @@ function App() {
   console.log("Production is ", process.env.NODE_ENV)
 
   return (
-      <Router>
 
-        <Navbar></Navbar>
-
-
-        <Switch>
-          <Route path="/timeslotcategorie/edit/:timeslotCategorieId"
-            component={TimeslotCategorieForm}
-          />
-          <Route path="/login" render={() =>
-            loginInformation.loggedIn ? <Redirect to="/" /> : <LoginForm />
-          } />
-
-          <Route path="/timeslot/create" render={() =>
-            loginInformation.loggedIn ? <TimeslotForm /> : <Redirect to="/login" />
-          } />
-
-          <Route path="/timeslot" render={() =>
-            loginInformation.loggedIn ? <TimeslotList /> : <Redirect to="/login" />
-          } />
-
-          <Route path="/moderator" render={() =>
-            loginInformation.loggedIn ? <User /> : <Redirect to="/login" />
-          } />
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/" render={() =>
-            loginInformation.loggedIn ? <UserInformation /> : <Redirect to="/login" />
-          } />
-        </Switch>
+        <Router>
+          <languageContext.Provider value={translations[language]}>
+            <Navbar></Navbar>
 
 
-      </Router>
+            <Switch>
+              <Route path="/timeslotcategorie/edit/:timeslotCategorieId"
+                component={TimeslotCategorieForm}
+              />
+              <Route path="/login" render={() =>
+                loginInformation.loggedIn ? <Redirect to="/" /> : <LoginForm />
+              } />
+
+              <Route path="/timeslot/create" render={() =>
+                loginInformation.loggedIn ? <TimeslotForm /> : <Redirect to="/login" />
+              } />
+
+              <Route path="/timeslot" render={() =>
+                loginInformation.loggedIn ? <TimeslotList /> : <Redirect to="/login" />
+              } />
+
+              <Route path="/moderator" render={() =>
+                loginInformation.loggedIn ? <User /> : <Redirect to="/login" />
+              } />
+              <Route path="/logout">
+                <Logout />
+              </Route>
+              <Route path="/" render={() =>
+                loginInformation.loggedIn ? <UserInformation /> : <Redirect to="/login" />
+              } />
+            </Switch>
+          </languageContext.Provider>
+        </Router>
   );
 }
-
 export default App;

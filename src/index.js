@@ -4,7 +4,6 @@ import App from './App';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
-
 import loginReducer from './reducers/login'
 import roleReducer from './reducers/role';
 import userReducer from "./reducers/user"
@@ -13,6 +12,7 @@ import moderatorReducer from './reducers/moderator';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import timeslotReducer from './reducers/timeslot';
 import timeslotCategorieReducer from './reducers/timeslotCategorie';
+import l18nReducer from './reducers/l18n';
 
 const store = createStore(combineReducers({
   login: loginReducer,
@@ -20,7 +20,8 @@ const store = createStore(combineReducers({
   user: userReducer,
   moderator: moderatorReducer,
   timeslot: timeslotReducer,
-  timeslotCategorie: timeslotCategorieReducer
+  timeslotCategorie: timeslotCategorieReducer,
+  l18n: l18nReducer
 }),
   applyMiddleware(thunk)
 )

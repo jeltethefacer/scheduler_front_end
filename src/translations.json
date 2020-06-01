@@ -1,0 +1,22 @@
+{
+	"dutch": {
+		"welcomemessage": "Hallo gebruiker",
+		"home": "startpagina",
+		"login": "log in",
+		"logout": "log uit",
+		"createTimeslot": "creer een nieuwe tijdspunt",
+		"timeslots": "tijdspunten",
+		"moderator": "beheerder",
+		"otherLanguage": "english"
+	},
+	"english": {
+		"welcomemessage": "Hallo gebruiker",
+		"home": "homepage",
+		"login": "login",
+		"logout": "logout",
+		"createTimeslot": "create a timeslot",
+		"timeslots": "timeslots",
+		"moderator": "moderator",
+		"otherLanguage": "nederlands"
+	}
+}
