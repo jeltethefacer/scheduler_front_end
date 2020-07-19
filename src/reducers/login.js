@@ -1,4 +1,5 @@
 const defaultState = {
+    token: null, 
     loggedIn: false,
     pending: true
 }
@@ -15,10 +16,12 @@ const loginReducer = (state = defaultState, action) => {
         case "NO_TOKEN":
             return {
                 loggedIn: false,
-                pending: false
+                pending: false,
+                token: null
             }
         case "LOGOUT":
             return {
+                token: null,
                 loggedIn: false,
                 error: false,
                 pending: false

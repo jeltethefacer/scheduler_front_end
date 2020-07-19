@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { getRoleList } from "../actions/role"
-import "../css/dropdown.css"
+import { getRoleList } from "../../actions/role"
+import "../../css/dropdown.css"
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
@@ -48,7 +48,6 @@ function RoleList() {
             </TableContainer>
         )
     }
-    console.log(roles)
     if (roles) {
         return (
             <div>

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { getTimeslots } from '../actions/timeslot';
-import { getRoleList } from '../actions/role';
+import { getTimeslots } from '../../actions/timeslot';
+import { getRoleList } from '../../actions/role';
 
 
-import { errorCodeFormatting } from '../utils/errorCodeFormatting';
-import { getUserInformation } from '../actions/user';
-import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
-import TimeslotCards from "./TimeslotCards"
-import { checkTimeslotCategorie } from '../utils/checkRole';
+import { errorCodeFormatting } from '../../utils/errorCodeFormatting';
+import { getUserInformation } from '../../actions/user';
+import { getTimeslotCategorieList } from '../../actions/timeslotCategorie';
+import TimeslotCards from "../TimeslotCards"
+import { checkTimeslotCategorie } from '../../utils/checkRole';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 

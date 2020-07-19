@@ -1,14 +1,13 @@
-import Axios from "axios"
+import tokenRequest from "../utils/axiosInstance"
 
-import {config} from "../utils/config"
 
-const baseUrl = `${config().url}/api/role`
+const baseUrl = `/api/role`
 
 
 export const getRoleList = () => {
     return async dispatch => {
         try {
-            const roles = await Axios.get(`${baseUrl}`)
+            const roles = await tokenRequest().get(baseUrl)
 
             const rolesList = roles.data
             dispatch({

@@ -3,7 +3,8 @@ const defaultState = {
     timeslots: [],
     errorCode: "",
     succes: false,
-    errorInfo: ""
+    errorInfo: "",
+    userTimeslots: []
 }
 
 const timeslotReducer = (state = defaultState, action) => {
@@ -18,6 +19,11 @@ const timeslotReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 timeslots: action.data.timeslots
+            }
+        case "GET_USER_TIMESLOTS":
+            return {
+                ...state,
+                userTimeslots: action.data.userTimeslots
             }
         case "SUBSCRIBED_TIMESLOT":
             const newTimeslots = state.timeslots.map(timeslot => {

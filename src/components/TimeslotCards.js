@@ -109,7 +109,6 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
 
                     <CardActions>
                         <ButtonGroup>
-                            {console.log(timeslot.subscribed, userId)}
                             {
                             
                                 !timeslot.subscribed.includes(userId) ?

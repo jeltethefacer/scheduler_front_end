@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 function TimeslotCategorieForm(props) {
     const dispatch = useDispatch()
     const history = useHistory()
+    
     const timeslotCategorieState = useSelector(state => state.timeslotCategorie)
     const token = useSelector(state => state.login.token)
 
@@ -33,6 +34,7 @@ function TimeslotCategorieForm(props) {
     let [cancelLength, setCancelLength] = useState(defaultState.cancelLength)
     let [subscribeLength, setSubscribeLength] = useState(defaultState.subscribeLength)
 
+    //sets the state in case it is editing a existing timeslotcategorie
     if(apiCall && timeslotCategorieId && timeslotCategorieState.timeslotCategorie && timeslotCategorieState.timeslotCategorie.id === timeslotCategorieId) {
         setTitle(timeslotCategorieState.timeslotCategorie.title)
         setCancelLength(timeslotCategorieState.timeslotCategorie.cancelLength)
@@ -87,10 +89,11 @@ function TimeslotCategorieForm(props) {
         }
     }
 
+
+    //resets the succes and redirect on a succesfull edit
     if(timeslotCategorieState.succes) {
         dispatch({type: "RESET_SUCCES_TIMESLOT_CATEGORIE"})
         history.push("/moderator")
-        
     } 
 
     return (

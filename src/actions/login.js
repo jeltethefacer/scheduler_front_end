@@ -1,12 +1,10 @@
-import Axios from "axios"
-import { config } from "../utils/config"
-
-const baseUrl = `${config().url}/api/user/login`
+import tokenRequest from "../utils/axiosInstance"
+const baseUrl = '/api/user/login'
 
 export const login = (email, password) => {
     return async dispatch => {
         try {
-            const user = await Axios.post(baseUrl, { email: email, password: password })
+            const user = await tokenRequest().post(baseUrl, { email: email, password: password })
             const userData = user.data
             localStorage.setItem("token", userData.token)
             dispatch({
@@ -40,14 +38,7 @@ export const verifyToken = (token) => {
 
     return async dispatch => {
         try {
-            await Axios.post(`${baseUrl}/verify`,
-                {},
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
-                }
-            )
+            await tokenRequest(token).post(`${baseUrl}/verify`)
 
             dispatch({
                 type: "LOGIN",

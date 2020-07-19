@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers, deleteUser, toggleRole, toggleChairman } from "../actions/moderator"
-import { getRoleList } from "../actions/role"
-import "../css/dropdown.css"
+import { getUsers, deleteUser, toggleRole, toggleChairman } from "../../actions/moderator"
+import { getRoleList } from "../../actions/role"
+import "../../css/dropdown.css"
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
 

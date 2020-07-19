@@ -1,12 +1,11 @@
-import Axios from "axios"
-import {config} from "../utils/config"
+import tokenRequest from "../utils/axiosInstance"
 
-const baseUrl = `${config().url}/api/timeslot`
+const baseUrl = `/api/timeslot`
 
 export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles, timeslotCategorie) => {
     return async dispatch => {
         try {
-            const user = await Axios.post(`${baseUrl}`,
+            const user = await tokenRequest(token).post(`${baseUrl}`,
                 {
                     description: description,
                     startTime: startTime,
@@ -14,11 +13,6 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                     maxPeople: maxPeople,
                     roles: roles,
                     timeslotCategorie: timeslotCategorie
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const timeslotData = user.data
@@ -70,13 +64,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
 export const getTimeslots = (token) => {
     return async dispatch => {
         try {
-            const timeslots = await Axios.get(`${baseUrl}`,
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
-                }
-            )
+            const timeslots = await tokenRequest(token).get(baseUrl)
             const timeslotsData = timeslots.data
 
             //refresh user list
@@ -110,17 +98,51 @@ export const getTimeslots = (token) => {
     }
 }
 
+export const getUserTimeslots = (token) => {
+    return async dispatch => {
+        try {
+            const timeslots = await tokenRequest(token).get(`${baseUrl}/user`)
+
+            const timeslotsData = timeslots.data.timeslots
+            //refresh user list
+            dispatch({
+                type: "GET_USER_TIMESLOTS",
+                data: {
+                    userTimeslots: timeslotsData
+                }
+            })
+        } catch (error) {
+            console.log(error.response.data)
+            switch (error.response.status) {
+                case 400: 
+                    dispatch({
+                        type: "TIMESLOT_ERROR",
+                        data: {
+                            errorCode: error.response.date.errorCode
+                        }
+                    })
+                    break
+                case 401:
+                    dispatch({
+                        type: "INVALID_TOKEN"
+                    })
+                    break
+                default:
+                    dispatch({
+                        type: "SERVER_ERROR"
+                    })
+                    break
+            }
+        }
+    }
+}
+
 export const subscribeTimeslot = (token, timeslotId) => {
     return async dispatch => {
         try {
-            const timeslot = await Axios.post(`${baseUrl}/subscribe`,
+            const timeslot = await tokenRequest(token).post(`${baseUrl}/subscribe`,
                 {
                     timeslotId: timeslotId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const timeslotData = timeslot.data
@@ -159,14 +181,9 @@ export const subscribeTimeslot = (token, timeslotId) => {
 export const unSubscribe = (token, timeslotId) => {
     return async dispatch => {
         try {
-            const timeslot = await Axios.post(`${baseUrl}/unsubscribe`,
+            const timeslot = await tokenRequest(token).post(`${baseUrl}/unsubscribe`,
                 {
                     timeslotId: timeslotId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const timeslotData = timeslot.data
@@ -205,14 +222,9 @@ export const unSubscribe = (token, timeslotId) => {
 export const deleteTimeslot = (token, timeslotId) => {
     return async dispatch => {
         try {
-            await Axios.post(`${baseUrl}/delete`,
+            await tokenRequest(token).post(`${baseUrl}/delete`,
                 {
                     timeslotId: timeslotId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
 

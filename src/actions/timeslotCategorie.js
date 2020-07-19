@@ -1,23 +1,15 @@
-import Axios from "axios"
-
-import { config } from "../utils/config"
-
-const baseUrl = `${config().url}/api/timeslotCategorie`
+import tokenRequest from "../utils/axiosInstance"
+const baseUrl = `/api/timeslotCategorie`
 
 
 export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await Axios.post(`${baseUrl}`,
+            const timeslotCategorie = await tokenRequest(token).post(`${baseUrl}`,
                 {
                     title: title,
                     cancelLength: cancelLength,
                     subscribeLength: subscribeLength
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const categorieEntity = timeslotCategorie.data
@@ -58,13 +50,7 @@ export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength
 export const getTimeslotCategorieList = (token) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await Axios.get(`${baseUrl}`,
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
-                }
-            )
+            const timeslotCategorie = await tokenRequest(token).get(baseUrl)
             const categoriesEntity = timeslotCategorie.data
 
             //refresh user list
@@ -106,13 +92,7 @@ export const getTimeslotCategorieList = (token) => {
 export const fetchOneTimeslotCategorie = (token, categorieId) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await Axios.get(`${baseUrl}/${categorieId}`,
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
-                }
-            )
+            const timeslotCategorie = await tokenRequest(token).get(`${baseUrl}/${categorieId}`)
             const categorieEntity = timeslotCategorie.data.timeslotCategorie
             //refresh user list
             dispatch({
@@ -151,17 +131,12 @@ export const fetchOneTimeslotCategorie = (token, categorieId) => {
 export const changeTimeslotCategorie = (token, timeslotCategorieId, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await Axios.post(`${baseUrl}/change`,
+            const timeslotCategorie = await tokenRequest(token).post(`${baseUrl}/change`,
                 {
                     timeslotCategorieId: timeslotCategorieId,
                     title: title,
                     cancelLength: cancelLength,
                     subscribeLength: subscribeLength
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const categorieEntity = timeslotCategorie.data.timeslotCategorie

@@ -1,16 +1,9 @@
-import Axios from "axios"
-import {config} from "../utils/config"
-
-const baseUrl = `${config().url}/api/user`
+import tokenRequest from "../utils/axiosInstance"
 
 export const getUserInformation = (token) => {
     return async dispatch => {
         try {
-            const user = await Axios.get(baseUrl, {
-                headers: {
-                    "authorization": `bearer ${token}`
-                }
-            })
+            const user = await tokenRequest(token).get("/api/user")
 
             const userData = user.data
             

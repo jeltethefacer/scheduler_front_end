@@ -24,8 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build & rmdir /Q /S -r \"C:\\Users\\Jelte Boelens\\Documents\\react\\scheduler\\build\" & xcopy /E /I \"C:\\Users\\Jelte Boelens\\Documents\\react\\scheduler_front_end\\build\" \"C:\\Users\\Jelte Boelens\\Documents\\react\\scheduler\\build\" & cd \"C:\\Users\\Jelte Boelens\\Documents\\react\\scheduler\"  & git add . & git commit -m \"deply commit\" && git push heroku master",
-    "deploy_test": "npm run build & rmdir /Q /S -r \"..\\back_end\\build\" & xcopy /E /I build \"..\\back_end\\build\" & cd \"..\\back_end\" & git add . & git commit & git push heroku master"
+    "deploy": "npm run build & rmdir /Q /S -r \"..\\back_end\\build\" & xcopy /E /I build \"..\\back_end\\build\" & cd \"..\\back_end\" & git add . & git commit & git push heroku master"
   },
   "eslintConfig": {
     "extends": "react-app"

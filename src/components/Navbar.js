@@ -38,6 +38,12 @@ function Navbar() {
         }
     }
 
+    const multipleTimeslotLink = (userRoles, chairman, translation) => {
+        if(checkRole(userRoles, "createTimeslot") || (chairman && chairman.length !== 0)) {
+        return <li className={"navbar_list_element"}><Link to="/timeslot/create/multiple" className={"navbar_link"}>{translation.createMultipleTimeslot}</Link></li>
+        }
+    }
+
 
     useEffect(() => {
         if (token) {
@@ -50,8 +56,6 @@ function Navbar() {
 
     }
 
-    console.log("navbar", translation)
-
     //renders only if there is userinformation
     return (
         <ul className={"navbar_list"}>
@@ -60,6 +64,8 @@ function Navbar() {
             <li className={"navbar_log_element"} onClick={()=> onChangeLanguageClick(language)}><div className={"navbar_link"}>{translation.otherLanguage}</div></li>
             {loginInformation.loggedIn? moderatorLink(userRoles, translation) : ""}
             {loginInformation.loggedIn? user ? timeslotLink(userRoles, user.chairman, translation) : "" : ""}
+            {loginInformation.loggedIn? user ? multipleTimeslotLink(userRoles, user.chairman, translation) : "" : ""}
+
             {loginInformation.loggedIn? <li className={"navbar_list_element"}><Link to="/timeslot" className={"navbar_link"}>{translation.timeslots}</Link></li> : ""}
         </ul>
     )

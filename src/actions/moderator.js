@@ -1,18 +1,10 @@
-import Axios from "axios"
-
-
-import {config} from "../utils/config"
-
-const baseUrl = `${config().url}/api/moderator`
+import tokenRequest from "../utils/axiosInstance"
+const baseUrl = `/api/moderator`
 
 export const getUsers = (token) => {
     return async dispatch => {
         try {
-            const users = await Axios.get(`${baseUrl}/users`, {
-                headers: {
-                    "authorization": `bearer ${token}`
-                }
-            })
+            const users = await tokenRequest(token).get(`${baseUrl}/users`)
 
             const userList = users.data
             dispatch({
@@ -39,20 +31,14 @@ export const getUsers = (token) => {
     }
 }
 
-
 export const addUser = (token, email, frontName, lastName) => {
     return async dispatch => {
         try {
-            const user = await Axios.post(`${baseUrl}/addUser`,
+            const user = await tokenRequest(token).post(`${baseUrl}/addUser`,
                 {
                     email: email,
                     frontName: frontName,
                     lastName: lastName
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const userEntity = user.data
@@ -91,14 +77,9 @@ export const addUser = (token, email, frontName, lastName) => {
 export const deleteUser = (token, userId) => {
     return async dispatch => {
         try {
-            await Axios.post(`${baseUrl}/deleteUser`,
+            await tokenRequest(token).post(`${baseUrl}/deleteUser`,
                 {
                     userId: userId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             //refresh user list
@@ -132,15 +113,10 @@ export const deleteUser = (token, userId) => {
 export const addRole = (token, abreviation, description) => {
     return async dispatch => {
         try {
-            const role = await Axios.post(`${baseUrl}/addRole`,
+            const role = await tokenRequest(token).post(`${baseUrl}/addRole`,
                 {
                     abreviation: abreviation,
                     description: description
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const roleEntity = role.data
@@ -179,17 +155,13 @@ export const toggleRole = (token, roleId, userId) => {
     return async dispatch => {
         console.log('lamo')
         try {
-            const toggleRoleRespone = await Axios.post(`${baseUrl}/toggleRole`,
+            const toggleRoleRespone = await tokenRequest(token).post(`${baseUrl}/toggleRole`,
                 {
                     roleId: roleId,
                     userId: userId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
+
             const roleEntity = toggleRoleRespone.data.role
             const userEntity = toggleRoleRespone.data.user
             console.log("addRole", toggleRoleRespone.data)
@@ -235,15 +207,10 @@ export const toggleRole = (token, roleId, userId) => {
 export const toggleChairman = (token, roleId, userId) => {
     return async dispatch => {
         try {
-            const toggleChairmanResponse = await Axios.post(`${baseUrl}/toggleChairman`,
+            const toggleChairmanResponse = await tokenRequest(token).post(`${baseUrl}/toggleChairman`,
                 {
                     roleId: roleId,
                     userId: userId
-                },
-                {
-                    headers: {
-                        "authorization": `bearer ${token}`
-                    }
                 }
             )
             const userEntity = toggleChairmanResponse.data

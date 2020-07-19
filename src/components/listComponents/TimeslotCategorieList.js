@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import "../css/dropdown.css"
+import "../../css/dropdown.css"
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
+import { getTimeslotCategorieList } from '../../actions/timeslotCategorie';
 import { useHistory } from 'react-router';
 
 function TimeslotCategorieList() {
