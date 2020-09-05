@@ -1,24 +1,24 @@
 import tokenRequest from "../utils/axiosInstance"
-const baseUrl = `/api/timeslotCategorie`
+const baseUrl = `/api/timeslotCategory`
 
 
-export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength) => {
+export const addTimeslotCategory = (token, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await tokenRequest(token).post(`${baseUrl}`,
+            const timeslotCategory = await tokenRequest(token).post(`${baseUrl}`,
                 {
                     title: title,
                     cancelLength: cancelLength,
                     subscribeLength: subscribeLength
                 }
             )
-            const categorieEntity = timeslotCategorie.data
+            const categoryEntity = timeslotCategory.data
 
             //refresh user list
             dispatch({
-                type: "ADD_TIMESLOT_CATEGORIE",
+                type: "ADD_TIMESLOT_CATEGORY",
                 data: {
-                    timeslotCategorie: categorieEntity
+                    timeslotCategory: categoryEntity
                 }
             })
         } catch (error) {
@@ -26,7 +26,7 @@ export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength
             switch (error.response.status) {
                 case 400:
                     dispatch({
-                        type: "TIMESLOT_CATEGORIE_ERROR",
+                        type: "TIMESLOT_CATEGORY_ERROR",
                         data: {
                             errorCode: error.response.data.errorCode
                         }
@@ -34,7 +34,7 @@ export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength
                     break
                 case 401:
                     dispatch({
-                        type: "TIMESLOT_CATEGORIE_VALIDATION_ERROR"
+                        type: "TIMESLOT_CATEGORY_VALIDATION_ERROR"
                     })
                     break
                 default:
@@ -47,15 +47,15 @@ export const addTimeslotCategorie = (token, title, cancelLength, subscribeLength
     }
 }
 
-export const getTimeslotCategorieList = (token) => {
+export const getTimeslotCategoryList = (token) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await tokenRequest(token).get(baseUrl)
-            const categoriesEntity = timeslotCategorie.data
+            const timeslotCategory = await tokenRequest(token).get(baseUrl)
+            const categoriesEntity = timeslotCategory.data
 
             //refresh user list
             dispatch({
-                type: "TIMESLOT_CATEGORIE_LIST",
+                type: "TIMESLOT_CATEGORY_LIST",
                 data: {
                     timeslotCategories: categoriesEntity
                 }
@@ -66,7 +66,7 @@ export const getTimeslotCategorieList = (token) => {
                 case 400:
                 case 401:
                     dispatch({
-                        type: "TIMESLOT_CATEGORIE_ERROR",
+                        type: "TIMESLOT_CATEGORY_ERROR",
                         data: {
                             errorCode: error.response.data.errorCode
 
@@ -89,16 +89,16 @@ export const getTimeslotCategorieList = (token) => {
 }
 
 
-export const fetchOneTimeslotCategorie = (token, categorieId) => {
+export const fetchOneTimeslotCategory = (token, categoryId) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await tokenRequest(token).get(`${baseUrl}/${categorieId}`)
-            const categorieEntity = timeslotCategorie.data.timeslotCategorie
+            const timeslotCategory = await tokenRequest(token).get(`${baseUrl}/${categoryId}`)
+            const categoryEntity = timeslotCategory.data.timeslotCategory
             //refresh user list
             dispatch({
-                type: "FETCH_ONE_TIMESLOT_CATEGORIE",
+                type: "FETCH_ONE_TIMESLOT_CATEGORY",
                 data: {
-                    timeslotCategorie: categorieEntity
+                    timeslotCategory: categoryEntity
                 }
             })
         } catch (error) {
@@ -106,7 +106,7 @@ export const fetchOneTimeslotCategorie = (token, categorieId) => {
             switch (error.response.status) {
                 case 400:
                     dispatch({
-                        type: "TIMESLOT_CATEGORIE_ERROR",
+                        type: "TIMESLOT_CATEGORY_ERROR",
                         data: {
                             errorCode: error.response.data.errorCode
 
@@ -115,7 +115,7 @@ export const fetchOneTimeslotCategorie = (token, categorieId) => {
                     break
                 case 401:
                     dispatch({
-                        type: "TIMESLOT_CATEGORIE_VALIDATION_ERROR"
+                        type: "TIMESLOT_CATEGORY_VALIDATION_ERROR"
                     })
                     break
                 default:
@@ -128,28 +128,28 @@ export const fetchOneTimeslotCategorie = (token, categorieId) => {
     }
 }
 
-export const changeTimeslotCategorie = (token, timeslotCategorieId, title, cancelLength, subscribeLength) => {
+export const changeTimeslotCategory = (token, timeslotCategoryId, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
             const timeslotCategorie = await tokenRequest(token).post(`${baseUrl}/change`,
                 {
-                    timeslotCategorieId: timeslotCategorieId,
+                    timeslotCategoryId: timeslotCategoryId,
                     title: title,
                     cancelLength: cancelLength,
                     subscribeLength: subscribeLength
                 }
             )
-            const categorieEntity = timeslotCategorie.data.timeslotCategorie
-
+            const categoryEntity = timeslotCategorie.data.timeslotCategory
             //refresh user list
             dispatch({
-                type: "CHANGE_TIMESLOT_CATEGORIE",
+                type: "CHANGE_TIMESLOT_CATEGORY",
                 data: {
-                    timeslotCategorie: categorieEntity
+                    timeslotCategory: categoryEntity
                 }
             })
         } catch (error) {
-            switch (error.response.status) {
+            console.log(error)
+            switch (error) {
                 case 401:
                 case 400:
                     dispatch({

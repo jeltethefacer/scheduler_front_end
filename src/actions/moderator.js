@@ -218,7 +218,8 @@ export const toggleChairman = (token, roleId, userId) => {
             dispatch({
                 type: "TOGGLE_CHAIRMAN",
                 data: {
-                    user : userEntity
+                    user : userEntity.user,
+                    role: userEntity.role
                 }    
             })
         } catch (error) {

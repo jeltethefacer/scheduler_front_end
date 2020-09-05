@@ -8,7 +8,7 @@ import { errorCodeFormatting } from "../../utils/errorCodeFormatting"
 import { getRoleList } from '../../actions/role';
 
 import { Alert } from "@material-ui/lab"
-import { getTimeslotCategorieList } from '../../actions/timeslotCategorie';
+import { getTimeslotCategoryList } from '../../actions/timeslotCategorie';
 import { getUserInformation } from '../../actions/user';
 import { checkRole } from '../../utils/checkRole';
 
@@ -41,7 +41,7 @@ function MultipleTimeslotForm() {
 
     useEffect(() => {
         dispatch(getRoleList())
-        dispatch(getTimeslotCategorieList(token))
+        dispatch(getTimeslotCategoryList(token))
         dispatch(getUserInformation(token))
     }, [dispatch, token])
 

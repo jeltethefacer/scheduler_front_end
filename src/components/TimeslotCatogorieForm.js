@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { errorCodeFormatting } from '../utils/errorCodeFormatting';
-import { addTimeslotCategorie, fetchOneTimeslotCategorie, changeTimeslotCategorie } from "../actions/timeslotCategorie"
+import { addTimeslotCategory, fetchOneTimeslotCategory, changeTimeslotCategory } from "../actions/timeslotCategorie"
 import { useHistory } from 'react-router';
 
 function TimeslotCategorieForm(props) {
     const dispatch = useDispatch()
     const history = useHistory()
     
-    const timeslotCategorieState = useSelector(state => state.timeslotCategorie)
+    const timeslotCategoryState = useSelector(state => state.timeslotCategorie)
     const token = useSelector(state => state.login.token)
 
-    const timeslotCategorieId = props.match ? props.match.params.timeslotCategorieId : undefined
+    //check if its a number or not in case it is not a number set it to undefined
+
+    const timeslotCategoryId = props.match ? Number(props.match.params.timeslotCategorieId) ? Number(props.match.params.timeslotCategorieId) : undefined : undefined
+
 
     useEffect(() => {
-        if(timeslotCategorieId) {
-            dispatch(fetchOneTimeslotCategorie(token, timeslotCategorieId))
+        if(timeslotCategoryId) {
+            dispatch(fetchOneTimeslotCategory(token, timeslotCategoryId))
             setApiCall(true)
         }
-    }, [token, timeslotCategorieId, dispatch])
+    }, [token, timeslotCategoryId, dispatch])
 
 
     let defaultState = {
@@ -35,10 +38,10 @@ function TimeslotCategorieForm(props) {
     let [subscribeLength, setSubscribeLength] = useState(defaultState.subscribeLength)
 
     //sets the state in case it is editing a existing timeslotcategorie
-    if(apiCall && timeslotCategorieId && timeslotCategorieState.timeslotCategorie && timeslotCategorieState.timeslotCategorie.id === timeslotCategorieId) {
-        setTitle(timeslotCategorieState.timeslotCategorie.title)
-        setCancelLength(timeslotCategorieState.timeslotCategorie.cancelLength)
-        setSubscribeLength(timeslotCategorieState.timeslotCategorie.subscribeLength)
+    if(apiCall && timeslotCategoryId && timeslotCategoryState.timeslotCategory && timeslotCategoryState.timeslotCategory.id === timeslotCategoryId) {
+        setTitle(timeslotCategoryState.timeslotCategory.title)
+        setCancelLength(timeslotCategoryState.timeslotCategory.cancelLength)
+        setSubscribeLength(timeslotCategoryState.timeslotCategory.subscribeLength)
         setApiCall(false)
     }
 
@@ -64,12 +67,14 @@ function TimeslotCategorieForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if(!timeslotCategorieId) {
-            dispatch(addTimeslotCategorie(token, title, cancelLength, subscribeLength))
+        if(!timeslotCategoryId) {
+            dispatch(addTimeslotCategory(token, title, cancelLength, subscribeLength))
             setTitle("")
             setCancelLength(24)
         } else {
-            dispatch(changeTimeslotCategorie(token, timeslotCategorieId, title, cancelLength, subscribeLength)) 
+            console.log("handle", token)
+
+            dispatch(changeTimeslotCategory(token, timeslotCategoryId, title, cancelLength, subscribeLength)) 
         }
     }
 
@@ -89,17 +94,17 @@ function TimeslotCategorieForm(props) {
         }
     }
 
-
+    console.log(timeslotCategoryState)
     //resets the succes and redirect on a succesfull edit
-    if(timeslotCategorieState.succes) {
-        dispatch({type: "RESET_SUCCES_TIMESLOT_CATEGORIE"})
+    if(timeslotCategoryState.succes) {
+        dispatch({type: "RESET_SUCCES_TIMESLOT_CATEGORY"})
         history.push("/moderator")
     } 
 
     return (
         <div>
             <h2>Add timelslotCategorie</h2>
-            {errorCodeFormatting(timeslotCategorieState.errorCode, errorText)}
+            {errorCodeFormatting(timeslotCategoryState.errorCode, errorText)}
             < form onSubmit={handleSubmit} >
                 title: <input type="text" value={title} onChange={handleTitleChange} /> <br />
                 cancle length (hours): <input type="number" min={0} value={cancelLength} onChange={handleCancelLengthChange} /><br />

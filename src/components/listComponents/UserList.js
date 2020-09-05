@@ -21,13 +21,11 @@ function UserList() {
     }, [dispatch, token])
 
 
-    
-
-    const findRoleById = (rolesArray, roleId) => {
-        return rolesArray.filter(role => role.id === roleId)[0]
-    }
+    console.log(users)
 
     function mapUsers() {
+        console.log(roles)
+
         return (
             <TableContainer>
                 <Table>
@@ -46,13 +44,13 @@ function UserList() {
                 </TableHead>
                 <TableBody>
                     {
-                        users.map(user => 
-                            <TableRow key={user.id}>
+                        users.map(user => {
+                            return <TableRow key={user.id}>
                                 <TableCell>{user.frontName}</TableCell>
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.id}</TableCell>
-                                <TableCell>{user.roles.map(role => <div key={role}>{findRoleById(roles, role).abreviation}</div>)}</TableCell>
+                        <TableCell>{user.roles.map(role => <div key={role.id}>{role.abreviation}</div>)}</TableCell>
                                 <TableCell><button onClick={() => dispatch(deleteUser(token, user.id))}>Delete User</button></TableCell>
                                 <TableCell>
                                     <div className="dropdown">
@@ -62,7 +60,7 @@ function UserList() {
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell>{user.chairman.map(role => <div key={role}>{findRoleById(roles, role).abreviation}</div>)}</TableCell>
+                                <TableCell>{user.chairman.map(role => <div key={role}>{role.abreviation}</div>)}</TableCell>
                                 <TableCell>
                                     <div className="dropdown">
                                         <button className="dropbtn">Dropdown</button>
@@ -72,14 +70,13 @@ function UserList() {
                                     </div>
                                 </TableCell>
                             </TableRow>
-                        )
+                        })
                     }
                 </TableBody>
                 </Table>
             </TableContainer>
         )
     }
-
     if (users && roles) {
         return (
             <div>

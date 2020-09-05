@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import "../../css/dropdown.css"
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import { getTimeslotCategorieList } from '../../actions/timeslotCategorie';
+import { getTimeslotCategoryList } from '../../actions/timeslotCategorie';
 import { useHistory } from 'react-router';
 
 function TimeslotCategorieList() {
@@ -13,14 +13,14 @@ function TimeslotCategorieList() {
 
     useEffect(() => {
         if (token) {
-            dispatch(getTimeslotCategorieList())
+            dispatch(getTimeslotCategoryList())
         }
     }, [dispatch, token])
 
     const redirectTimeslotCategorieEdit = (categorieId) => {
         history.push(`timeslotcategorie/edit/${categorieId}`)
     }
-
+    console.log(timeslotCategories)
     function mapTimeslotCategories(timeslotCategories) {
         return (
             <TableContainer>

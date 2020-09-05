@@ -1,50 +1,53 @@
 
 const defaultState = {
     timeslotCategories: [],
-    timeslotCategorie: null,
+    timeslotCategory: null,
     errorCode: "",
     succes: false
 }
 
-const timeslotCategorieReducer = (state = defaultState, action) => {
+const timeslotCategoryReducer = (state = defaultState, action) => {
+    
+    console.log(action)
+
     switch(action.type) {
-        case "ADD_TIMESLOT_CATEGORIE" :
+        case "ADD_TIMESLOT_CATEGORY" :
             return { 
                 ...state,
-                timeslotCategories: state.timeslotCategories.concat(action.data.timeslotCategorie),
+                timeslotCategories: state.timeslotCategories.concat(action.data.timeslotCategory),
                 succes: true,
                 errorCode: ""
             }            
-        case "TIMESLOT_CATEGORIE_LIST" :
+        case "TIMESLOT_CATEGORY_LIST" :
             return {
                 ...state,
                 timeslotCategories: action.data.timeslotCategories,
             }
-        case "CHANGE_TIMESLOT_CATEGORIE":
-            const newTimeslotCategories = state.timeslotCategories.map((timeslotCategorie) => {
-                if(timeslotCategorie.id === action.data.timeslotCategorie.id) {
-                    return action.data.timeslotCategorie
+        case "CHANGE_TIMESLOT_CATEGORY":
+            const newTimeslotCategories = state.timeslotCategories.map((timeslotCategory) => {
+                if(timeslotCategory.id === action.data.timeslotCategory.id) {
+                    return action.data.timeslotCategory
                 }
-                return timeslotCategorie
+                return timeslotCategory
             })
             return {
                 timeslotCategories: newTimeslotCategories,
-                timeslotCategorie: null,
+                timeslotCategory: null,
                 errorCode: "",
                 succes: true
             }
-        case "FETCH_ONE_TIMESLOT_CATEGORIE":
+        case "FETCH_ONE_TIMESLOT_CATEGORY":
             return {
                 ...state, 
-                timeslotCategorie: action.data.timeslotCategorie
+                timeslotCategory: action.data.timeslotCategory
             }
-        case "TIMESLOT_CATEGORIE_ERROR":
+        case "TIMESLOT_CATEGORY_ERROR":
             return {
                 ...state,
                 errorCode: action.data.errorCode,
                 succes: false
             }
-        case "RESET_SUCCES_TIMESLOT_CATEGORIE" :
+        case "RESET_SUCCES_TIMESLOT_CATEGORY" :
             return {
                 ...state,
                 succes: false,
@@ -54,4 +57,4 @@ const timeslotCategorieReducer = (state = defaultState, action) => {
             return state
     }
 }
-export default timeslotCategorieReducer
+export default timeslotCategoryReducer

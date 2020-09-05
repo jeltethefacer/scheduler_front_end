@@ -6,7 +6,7 @@ import { getRoleList } from '../../actions/role';
 
 import { errorCodeFormatting } from '../../utils/errorCodeFormatting';
 import { getUserInformation } from '../../actions/user';
-import { getTimeslotCategorieList } from '../../actions/timeslotCategorie';
+import { getTimeslotCategoryList } from '../../actions/timeslotCategorie';
 import TimeslotCards from "../TimeslotCards"
 import { checkTimeslotCategorie } from '../../utils/checkRole';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
@@ -31,7 +31,7 @@ function TimeslotList() {
             dispatch(getTimeslots(token))
             dispatch(getRoleList(token))
             dispatch(getUserInformation(token))
-            dispatch(getTimeslotCategorieList(token))
+            dispatch(getTimeslotCategoryList(token))
         }
     }, [dispatch, token])
 

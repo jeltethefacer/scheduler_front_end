@@ -4,7 +4,7 @@ import { getUserInformation } from "../actions/user"
 import { getUserTimeslots } from '../actions/timeslot';
 import TimeslotCards from "./TimeslotCards"
 import { getRoleList } from '../actions/role';
-import { getTimeslotCategorieList } from '../actions/timeslotCategorie';
+import { getTimeslotCategoryList } from '../actions/timeslotCategorie';
 import UserInformation from './UserInformation';
 function FrontPage() {
     const userInformation = useSelector(state => state.user)
@@ -18,7 +18,7 @@ function FrontPage() {
     useEffect(() => {
         dispatch(getUserInformation(token))
         dispatch(getUserTimeslots(token))
-        dispatch(getTimeslotCategorieList(token))
+        dispatch(getTimeslotCategoryList(token))
         dispatch(getRoleList())
     }, [dispatch, token])
 
