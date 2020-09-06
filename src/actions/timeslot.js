@@ -151,7 +151,7 @@ export const subscribeTimeslot = (token, timeslotId) => {
             dispatch({
                 type: "SUBSCRIBED_TIMESLOT",
                 data: {
-                    timeslot: timeslotData
+                    timeslot: timeslotData.timeslot
                 }
             })
         } catch (error) {
@@ -188,11 +188,11 @@ export const unSubscribe = (token, timeslotId) => {
             )
             const timeslotData = timeslot.data
 
-            //unsubscribe redux is same as subscribe redux maybe change name in future?
+            //TODO: unsubscribe redux is same as subscribe redux maybe change name in future?
             dispatch({
                 type: "SUBSCRIBED_TIMESLOT",
                 data: {
-                    timeslot: timeslotData
+                    timeslot: timeslotData.timeslot
                 }
             })
         } catch (error) {
@@ -222,13 +222,8 @@ export const unSubscribe = (token, timeslotId) => {
 export const deleteTimeslot = (token, timeslotId) => {
     return async dispatch => {
         try {
-            await tokenRequest(token).post(`${baseUrl}/delete`,
-                {
-                    timeslotId: timeslotId
-                }
-            )
+            await tokenRequest(token).delete(`${baseUrl}/${timeslotId}`)
 
-            //unsubscribe redux is same as subscribe redux maybe change name in future?
             dispatch({
                 type: "DELETE_TIMESLOT",
                 data: {

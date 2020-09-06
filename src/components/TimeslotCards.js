@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import { checkRole } from '../utils/checkRole';
+import { findById } from '../utils/findById';
 
 
 function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sortingOption, token}) {
@@ -57,7 +58,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
         {sorted.map(timeslot => {
             const startTimeDate = new Date(timeslot.startTime)
             const endTimeDate = new Date(timeslot.endTime)
-
+            const isSubscribed = findById(userId, timeslot.subscribers) ? true : false
             const returnElement =
                 <Card key={timeslot.id}>
                     <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={timeslot.title}
@@ -104,7 +105,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                         <ButtonGroup>
                             {
                             
-                                !timeslot.subscribers.includes(userId) ?
+                                !isSubscribed ?
                                     <Button onDoubleClick={() => dispatch(subscribeTimeslot(token, timeslot.id))} color="primary">
                                         Meld mij aan
                             </Button> :
@@ -118,7 +119,6 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                         </ButtonGroup>
                     </CardActions>
                 </Card>
-
             return returnElement
         })}
     </Grid>

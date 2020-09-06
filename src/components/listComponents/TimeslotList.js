@@ -10,7 +10,7 @@ import { getTimeslotCategoryList } from '../../actions/timeslotCategorie';
 import TimeslotCards from "../TimeslotCards"
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import {findById} from "../../utils/findById"
 
 function TimeslotList() {
     const dispatch = useDispatch()
@@ -84,7 +84,6 @@ function TimeslotList() {
 
     if (timeslots && roles.length !== 0 && timeslotCategories.length !== 0 && userInformation.user) {
         const groupedTimeslots = groupBy(timeslots, "timeslotCategory")
-
         return (
             <div>
                 <select onChange={onSelectSortChange} value={sortOption}>
@@ -95,19 +94,19 @@ function TimeslotList() {
                 {errorCodeFormatting(timeslotStatus.errorCode, errorText, timeslotStatus.errorInfo)}
                 
                 {
-                    Object.keys(groupBy(timeslots, "timeslotCategory")).map((categorie) => {
-                        return <ExpansionPanel key={categorie}>
+                    Object.keys(groupBy(timeslots, "timeslotCategory")).map((timeslotCategorieId) => {
+                        return <ExpansionPanel key={timeslotCategorieId}>
                             <ExpansionPanelSummary
-                                id={`${categorie}_panel`}
+                                id={`${timeslotCategorieId}_panel`}
                                 expandIcon={<ExpandMoreIcon />}
                             >
                                 <Typography variant="h5" component="h2">
-                                    { categorie.title}
+                                    { findById(timeslotCategorieId, timeslotCategories).title}
                                 </Typography>
                             </ExpansionPanelSummary>
 
                             <ExpansionPanelDetails>
-                                <TimeslotCards timeslots={groupedTimeslots[categorie]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.user.id} roleList={roles} sortingOption={sortOption} token={token} />
+                                <TimeslotCards timeslots={groupedTimeslots[timeslotCategorieId]} userRoles={userInformation.roles} categories={timeslotCategories} userId={userInformation.user.id} roleList={roles} sortingOption={sortOption} token={token} />
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                     })

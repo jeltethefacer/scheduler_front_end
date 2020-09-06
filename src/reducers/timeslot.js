@@ -8,8 +8,6 @@ const defaultState = {
 }
 
 const timeslotReducer = (state = defaultState, action) => {
-    console.log(action)
-
     switch(action.type) {
         case "ADD_TIMESLOT" :
             return { 
@@ -28,6 +26,9 @@ const timeslotReducer = (state = defaultState, action) => {
                 userTimeslots: action.data.userTimeslots
             }
         case "SUBSCRIBED_TIMESLOT":
+            
+            console.log(action.data)
+
             const newTimeslots = state.timeslots.map(timeslot => {
                 if(timeslot.id === action.data.timeslot.id) {
                     return action.data.timeslot
