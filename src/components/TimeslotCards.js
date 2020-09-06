@@ -6,15 +6,11 @@ import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 
 
-import { checkRole, checkTimeslotCategorie } from '../utils/checkRole';
+import { checkRole } from '../utils/checkRole';
 
 
 function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sortingOption, token}) {
     const dispatch = useDispatch()
-
-    const findRoleById = (rolesArray, roleId) => {
-        return rolesArray.filter(role => role.id === roleId)[0]
-    }
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -37,11 +33,11 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                 })
             case "usersRising":
                 return timeslots.sort((firstTimeslot, secondTimeslot) => {
-                    return firstTimeslot.subscribed.length - secondTimeslot.subscribed.length
+                    return firstTimeslot.subscribers.length - secondTimeslot.subscribers.length
                 })
             case "usersDecreasing":
                 return timeslots.sort((firstTimeslot, secondTimeslot) => {
-                    return secondTimeslot.subscribed.length - firstTimeslot.subscribed.length
+                    return secondTimeslot.subscribers.length - firstTimeslot.subscribers.length
                 })
             default:
                 return timeslots.sort((firstTimeslot, secondTimeslot) => {
@@ -51,7 +47,6 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
     }
 
     const sorted = sortTimeslot(timeslots, sortingOption)
-
 
     return <Grid
         container
@@ -65,7 +60,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
 
             const returnElement =
                 <Card key={timeslot.id}>
-                    <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={checkTimeslotCategorie(categories, timeslot.timeslotCategorie).title}
+                    <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={timeslot.title}
                         className={classes.root} />
                     <CardContent>
                         <Grid container spacing={2}>
@@ -74,10 +69,8 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                                     Roles
                             </Typography>
                                 <List dense={true}>
-                                    {timeslot.roles.map((roleId) => {
-                                        const role = findRoleById(roleList, roleId)
-
-                                        return <ListItem key={roleId}>
+                                    {timeslot.Roles.map((role) => {
+                                        return <ListItem key={role.id}>
                                             <ListItemText
                                                 primary={role.abreviation}
                                             />
@@ -90,11 +83,11 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                                     Users
                             </Typography>
                                 <List dense={true}>
-                                    {timeslot.subscribed.map((userId) => {
+                                    {timeslot.subscribers.map((user) => {
 
-                                        return <ListItem key={userId}>
+                                        return <ListItem key={user.id}>
                                             <ListItemText
-                                                primary={userId}
+                                                primary={user.frontName}
                                             />
                                         </ListItem>
                                     })}
@@ -102,7 +95,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                             </Grid>
                         </Grid>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {`${timeslot.subscribed.length}/${timeslot.maxPeople}`}<br />
+                            {`${timeslot.subscribers.length}/${timeslot.maxPeople}`}<br />
                         </Typography>
 
                     </CardContent>
@@ -111,7 +104,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                         <ButtonGroup>
                             {
                             
-                                !timeslot.subscribed.includes(userId) ?
+                                !timeslot.subscribers.includes(userId) ?
                                     <Button onDoubleClick={() => dispatch(subscribeTimeslot(token, timeslot.id))} color="primary">
                                         Meld mij aan
                             </Button> :

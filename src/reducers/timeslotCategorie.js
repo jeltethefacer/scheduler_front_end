@@ -8,8 +8,6 @@ const defaultState = {
 
 const timeslotCategoryReducer = (state = defaultState, action) => {
     
-    console.log(action)
-
     switch(action.type) {
         case "ADD_TIMESLOT_CATEGORY" :
             return { 

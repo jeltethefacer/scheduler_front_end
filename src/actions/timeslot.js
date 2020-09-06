@@ -2,7 +2,7 @@ import tokenRequest from "../utils/axiosInstance"
 
 const baseUrl = `/api/timeslot`
 
-export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles, timeslotCategorie) => {
+export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles, timeslotCategory) => {
     return async dispatch => {
         try {
             const user = await tokenRequest(token).post(`${baseUrl}`,
@@ -12,7 +12,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                     endTime: endTime,
                     maxPeople: maxPeople,
                     roles: roles,
-                    timeslotCategorie: timeslotCategorie
+                    timeslotCategory: timeslotCategory
                 }
             )
             const timeslotData = user.data

@@ -6,7 +6,7 @@ export const getUserInformation = (token) => {
             const apiResponse = await tokenRequest(token).get("/api/user")
 
             const responseData = apiResponse.data
-            console.log(responseData.user)
+
             dispatch({
                 type: "USER_INFORMATION",
                 data: {

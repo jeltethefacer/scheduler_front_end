@@ -153,8 +153,9 @@ export const addRole = (token, abreviation, description) => {
 
 export const toggleRole = (token, roleId, userId) => {
     return async dispatch => {
-        console.log('lamo')
         try {
+            console.log('lamo')
+
             const toggleRoleRespone = await tokenRequest(token).post(`${baseUrl}/toggleRole`,
                 {
                     roleId: roleId,

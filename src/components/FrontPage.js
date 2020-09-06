@@ -24,7 +24,7 @@ function FrontPage() {
 
     //renders only if there is userinformation
     if (userInformation.user && userTimeslots) {
-        console.log(userInformation)
+        console.log(userTimeslots)
         return (
             <div>
                 <UserInformation userInformation={userInformation}/>

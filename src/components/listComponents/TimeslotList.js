@@ -8,7 +8,6 @@ import { errorCodeFormatting } from '../../utils/errorCodeFormatting';
 import { getUserInformation } from '../../actions/user';
 import { getTimeslotCategoryList } from '../../actions/timeslotCategorie';
 import TimeslotCards from "../TimeslotCards"
-import { checkTimeslotCategorie } from '../../utils/checkRole';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -60,8 +59,6 @@ function TimeslotList() {
         setSortOption(event.target.value)
     }
 
-
-
     const errorText = (errorCode, errorInfo = "") => {
         switch (errorCode) {
             case "TIMESLOT_FULL":
@@ -76,7 +73,6 @@ function TimeslotList() {
         }
     }
 
-
     var groupBy = function (xs, key) {
         return xs.reduce(function (rv, x) {
             (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -84,9 +80,11 @@ function TimeslotList() {
         }, {});
     };
 
+    
 
     if (timeslots && roles.length !== 0 && timeslotCategories.length !== 0 && userInformation.user) {
-        const groupedTimeslots = groupBy(timeslots, "timeslotCategorie")
+        const groupedTimeslots = groupBy(timeslots, "timeslotCategory")
+
         return (
             <div>
                 <select onChange={onSelectSortChange} value={sortOption}>
@@ -95,16 +93,16 @@ function TimeslotList() {
                     })}
                 </select>
                 {errorCodeFormatting(timeslotStatus.errorCode, errorText, timeslotStatus.errorInfo)}
-
+                
                 {
-                    Object.keys(groupBy(timeslots, "timeslotCategorie")).map((categorie) => {
+                    Object.keys(groupBy(timeslots, "timeslotCategory")).map((categorie) => {
                         return <ExpansionPanel key={categorie}>
                             <ExpansionPanelSummary
                                 id={`${categorie}_panel`}
                                 expandIcon={<ExpandMoreIcon />}
                             >
                                 <Typography variant="h5" component="h2">
-                                    {  checkTimeslotCategorie(timeslotCategories, categorie).title}
+                                    { categorie.title}
                                 </Typography>
                             </ExpansionPanelSummary>
 
