@@ -15,7 +15,7 @@ import TimeslotForm from './components/TimeslotForm';
 import TimeslotList from './components/listComponents/TimeslotList';
 import Navbar from './components/Navbar';
 import TimeslotCategorieForm from './components/TimeslotCatogorieForm';
-
+import Timeslot from "./components/Timeslot";
 import translations from "./translations.json"
 import FrontPage from './components/FrontPage';
 import MultipleTimeslotForm from './components/forms/MultipleTimeslot';
@@ -51,9 +51,11 @@ function App() {
 
 
         <Switch>
-          <Route path="/timeslotcategorie/edit/:timeslotCategorieId"
-            component={TimeslotCategorieForm}
-          />
+          
+          <Route path="/timeslotcategory/edit/:timeslotCategorieId" render={(props) =>
+            loginInformation.loggedIn ? <TimeslotCategorieForm {...props} />: <LoginForm />
+          } />
+
           <Route path="/login" render={() =>
             loginInformation.loggedIn ? <Redirect to="/" /> : <LoginForm />
           } />
@@ -66,8 +68,11 @@ function App() {
             loginInformation.loggedIn ? <TimeslotForm /> : <Redirect to="/login" />
           } />
 
+          <Route path="/timeslot/:timeslotId" render={(props) =>
+            loginInformation.loggedIn ? <Timeslot {...props}/> : <Redirect to="/login" />
+          } />
 
-          <Route path="/timeslot" render={() =>
+          <Route path="/timeslot/" render={() =>
             loginInformation.loggedIn ? <TimeslotList /> : <Redirect to="/login" />
           } />
 

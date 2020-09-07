@@ -8,10 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { checkRole } from '../utils/checkRole';
 import { findById } from '../utils/findById';
+import { useHistory } from 'react-router';
 
 
-function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sortingOption, token}) {
+function TimeslotCards({ timeslots, userRoles, categories, userId, sortingOption, token, singleCard}) {
     const dispatch = useDispatch()
+    const history = useHistory()
+
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -19,8 +22,11 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
             height: 200,
         }
     }));
-
     const classes = useStyles();
+
+    const redirectTimeslot = (timeslotId) => {
+        history.push(`/timeslot/${timeslotId}`)
+    }
 
     const sortTimeslot = (timeslots, sortOption) => {
         switch (sortOption) {
@@ -46,8 +52,11 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
                 })
         }
     }
+    let sorted = timeslots
+    if(timeslots.length > 1 && sortingOption) {
+        sorted = sortTimeslot(timeslots, sortingOption)
+    }         
 
-    const sorted = sortTimeslot(timeslots, sortingOption)
 
     return <Grid
         container
@@ -59,10 +68,12 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
             const startTimeDate = new Date(timeslot.startTime)
             const endTimeDate = new Date(timeslot.endTime)
             const isSubscribed = findById(userId, timeslot.subscribers) ? true : false
+            const category = findById(timeslot.timeslotCategory, categories)
+            const style = {"backgroundColor": "green"}
             const returnElement =
-                <Card key={timeslot.id}>
-                    <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={timeslot.title}
-                        className={classes.root} />
+                <Card key={timeslot.id} style={style} >
+                    <CardHeader title={formatDateForCard(startTimeDate, endTimeDate)} subheader={`${category.title}: ${timeslot.description}`}
+                        className={classes.root} onClick={() => redirectTimeslot(timeslot.id)} />
                     <CardContent>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
@@ -88,7 +99,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, roleList, sor
 
                                         return <ListItem key={user.id}>
                                             <ListItemText
-                                                primary={user.frontName}
+                                                primary={`${user.frontName} ${user.lastName}`}
                                             />
                                         </ListItem>
                                     })}

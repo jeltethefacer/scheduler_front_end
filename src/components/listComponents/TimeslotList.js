@@ -15,8 +15,6 @@ import {findById} from "../../utils/findById"
 function TimeslotList() {
     const dispatch = useDispatch()
 
-
-
     const timeslots = useSelector(state => state.timeslot.timeslots)
     const roles = useSelector(state => state.roles)
     const userInformation = useSelector(state => state.user)
@@ -28,6 +26,7 @@ function TimeslotList() {
     useEffect(() => {
         if (token) {
             dispatch(getTimeslots(token))
+
             dispatch(getRoleList(token))
             dispatch(getUserInformation(token))
             dispatch(getTimeslotCategoryList(token))
@@ -62,11 +61,11 @@ function TimeslotList() {
     const errorText = (errorCode, errorInfo = "") => {
         switch (errorCode) {
             case "TIMESLOT_FULL":
-                return "time slot full please fuck off"
+                return "time slot is full"
             case "NO_VALID_ROLE":
                 return "you do not have the required role to subscribe to this timeslot please contact the moderator if you think this is an error."
-            case "TIME_ERROR":
-                return `The time to cancel your appointment has sadly passed contact the COMBAR in case you really can't tap you need to cancel atleast ${errorInfo} hours in advance`
+            case "TIME_ERROR_UNSUBSCRIBE":
+                return `The time to cancel your appointment has sadly passed contact the COMBAR or Chairman in case you really can't make it. you need to cancel atleast ${errorInfo} hours in advance`
 
             default:
                 return <div></div>
@@ -79,6 +78,7 @@ function TimeslotList() {
             return rv;
         }, {});
     };
+
 
     
 

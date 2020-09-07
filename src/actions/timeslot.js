@@ -5,7 +5,7 @@ const baseUrl = `/api/timeslot`
 export const addTimeslot = (token, description, startTime, endTime, maxPeople, roles, timeslotCategory) => {
     return async dispatch => {
         try {
-            const user = await tokenRequest(token).post(`${baseUrl}`,
+            const timeslot = await tokenRequest(token).post(`${baseUrl}`,
                 {
                     description: description,
                     startTime: startTime,
@@ -15,7 +15,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
                     timeslotCategory: timeslotCategory
                 }
             )
-            const timeslotData = user.data
+            const timeslotData = timeslot.data
 
             setTimeout(() => {
                 dispatch({
@@ -27,7 +27,7 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
             dispatch({
                 type: "ADD_TIMESLOT",
                 data: {
-                    timeslot: timeslotData
+                    timeslot: timeslotData.timeslot
                 }
             })
         } catch (error) {
@@ -97,6 +97,49 @@ export const getTimeslots = (token) => {
         }
     }
 }
+
+export const getOneTimeslot = (token, timeslotId) => {
+    return async dispatch => {
+        try {
+            const timeslots = await tokenRequest(token).get(`${baseUrl}/${timeslotId}`)
+            const timeslotData = timeslots.data
+            console.log(timeslotData)
+            //refresh user list
+            dispatch({
+                type: "ONE_TIMESLOT",
+                data: {
+                    timeslot: timeslotData.timeslot
+                }
+            })
+        } catch (error) {
+            console.log(error)
+            switch (error.response.status) {
+                case 400: 
+                    dispatch({
+                        type: "VALIDATION_ERROR_TIMESLOT",
+                        data: error.response.data
+                    })
+                    break
+                case 401:
+                    dispatch({
+                        type: "INVALID_TOKEN"
+                    })
+                    break
+                case 404:
+                    dispatch({
+                        type: "NO_TIMESLOT"
+                    })
+                    break
+                default:
+                    dispatch({
+                        type: "SERVER_ERROR"
+                    })
+                    break
+            }
+        }
+    }
+}
+
 
 export const getUserTimeslots = (token) => {
     return async dispatch => {

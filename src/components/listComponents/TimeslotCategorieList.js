@@ -20,7 +20,7 @@ function TimeslotCategorieList() {
     const redirectTimeslotCategorieEdit = (categorieId) => {
         history.push(`timeslotcategorie/edit/${categorieId}`)
     }
-    console.log(timeslotCategories)
+
     function mapTimeslotCategories(timeslotCategories) {
         return (
             <TableContainer>
