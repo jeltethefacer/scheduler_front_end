@@ -131,9 +131,8 @@ export const fetchOneTimeslotCategory = (token, categoryId) => {
 export const changeTimeslotCategory = (token, timeslotCategoryId, title, cancelLength, subscribeLength) => {
     return async dispatch => {
         try {
-            const timeslotCategorie = await tokenRequest(token).post(`${baseUrl}/change`,
+            const timeslotCategorie = await tokenRequest(token).put(`${baseUrl}/${timeslotCategoryId}`,
                 {
-                    timeslotCategoryId: timeslotCategoryId,
                     title: title,
                     cancelLength: cancelLength,
                     subscribeLength: subscribeLength

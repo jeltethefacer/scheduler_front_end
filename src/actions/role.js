@@ -1,15 +1,14 @@
 import tokenRequest from "../utils/axiosInstance"
 
-
 const baseUrl = `/api/role`
-
 
 export const getRoleList = () => {
     return async dispatch => {
         try {
             const roles = await tokenRequest().get(baseUrl)
 
-            const rolesList = roles.data
+            const rolesList = roles.data.roles
+            console.log("fajdf", rolesList)
             dispatch({
                 type: "ROLE_LIST",
                 data: {

@@ -183,11 +183,7 @@ export const getUserTimeslots = (token) => {
 export const subscribeTimeslot = (token, timeslotId) => {
     return async dispatch => {
         try {
-            const timeslot = await tokenRequest(token).post(`${baseUrl}/subscribe`,
-                {
-                    timeslotId: timeslotId
-                }
-            )
+            const timeslot = await tokenRequest(token).put(`${baseUrl}/${timeslotId}/user`)
             const timeslotData = timeslot.data
 
             //refresh user list
@@ -224,11 +220,7 @@ export const subscribeTimeslot = (token, timeslotId) => {
 export const unSubscribe = (token, timeslotId) => {
     return async dispatch => {
         try {
-            const timeslot = await tokenRequest(token).post(`${baseUrl}/unsubscribe`,
-                {
-                    timeslotId: timeslotId
-                }
-            )
+            const timeslot = await tokenRequest(token).delete(`${baseUrl}/${timeslotId}/user`)
             const timeslotData = timeslot.data
 
             //TODO: unsubscribe redux is same as subscribe redux maybe change name in future?

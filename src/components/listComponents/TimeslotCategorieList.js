@@ -18,7 +18,7 @@ function TimeslotCategorieList() {
     }, [dispatch, token])
 
     const redirectTimeslotCategorieEdit = (categorieId) => {
-        history.push(`timeslotcategorie/edit/${categorieId}`)
+        history.push(`timeslotcategory/edit/${categorieId}`)
     }
 
     function mapTimeslotCategories(timeslotCategories) {

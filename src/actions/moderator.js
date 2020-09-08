@@ -34,7 +34,7 @@ export const getUsers = (token) => {
 export const addUser = (token, email, frontName, lastName) => {
     return async dispatch => {
         try {
-            const user = await tokenRequest(token).post(`${baseUrl}/addUser`,
+            const user = await tokenRequest(token).post(`${baseUrl}/user`,
                 {
                     email: email,
                     frontName: frontName,
@@ -77,11 +77,7 @@ export const addUser = (token, email, frontName, lastName) => {
 export const deleteUser = (token, userId) => {
     return async dispatch => {
         try {
-            await tokenRequest(token).post(`${baseUrl}/deleteUser`,
-                {
-                    userId: userId
-                }
-            )
+            await tokenRequest(token).delete(`${baseUrl}/user/${userId}`)
             //refresh user list
             dispatch({
                 type: "DELETE_USER_SUCCES",
@@ -113,14 +109,14 @@ export const deleteUser = (token, userId) => {
 export const addRole = (token, abreviation, description) => {
     return async dispatch => {
         try {
-            const role = await tokenRequest(token).post(`${baseUrl}/addRole`,
+            const role = await tokenRequest(token).post(`${baseUrl}/role`,
                 {
                     abreviation: abreviation,
                     description: description
                 }
             )
             const roleEntity = role.data
-            console.log("addRole", roleEntity)
+
             //add role to role list
             dispatch({
                 type: "ADD_ROLE",
@@ -154,23 +150,16 @@ export const addRole = (token, abreviation, description) => {
 export const toggleRole = (token, roleId, userId) => {
     return async dispatch => {
         try {
-            console.log('lamo')
-
-            const toggleRoleRespone = await tokenRequest(token).post(`${baseUrl}/toggleRole`,
-                {
-                    roleId: roleId,
-                    userId: userId
-                }
-            )
+            const toggleRoleRespone = await tokenRequest(token).put(`${baseUrl}/user/${userId}/role/${roleId}`)
 
             const roleEntity = toggleRoleRespone.data.role
             const userEntity = toggleRoleRespone.data.user
-            console.log("addRole", toggleRoleRespone.data)
+
             //add role to role list
             dispatch({
                 type: "TOGGLE_ROLE",
                 data: {
-                    user : userEntity,
+                    user: userEntity,
                     role: roleEntity
                 }    
             })
@@ -208,13 +197,9 @@ export const toggleRole = (token, roleId, userId) => {
 export const toggleChairman = (token, roleId, userId) => {
     return async dispatch => {
         try {
-            const toggleChairmanResponse = await tokenRequest(token).post(`${baseUrl}/toggleChairman`,
-                {
-                    roleId: roleId,
-                    userId: userId
-                }
-            )
+            const toggleChairmanResponse = await tokenRequest(token).put(`${baseUrl}/user/${userId}/chairman/${roleId}`)
             const userEntity = toggleChairmanResponse.data
+            
             //add role to role list
             dispatch({
                 type: "TOGGLE_CHAIRMAN",
