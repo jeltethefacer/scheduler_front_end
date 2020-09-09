@@ -69,6 +69,11 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, sortingOption
             const endTimeDate = new Date(timeslot.endTime)
             const isSubscribed = findById(userId, timeslot.subscribers) ? true : false
             const category = findById(timeslot.timeslotCategory, categories)
+
+            if(!category) {
+                return <div></div>;
+            }
+
             const style = {"backgroundColor": "green"}
             const returnElement =
                 <Card key={timeslot.id} style={style} >
