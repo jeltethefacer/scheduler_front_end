@@ -61,10 +61,10 @@ export const addTimeslot = (token, description, startTime, endTime, maxPeople, r
     }
 }
 
-export const getTimeslots = (token) => {
+export const getTimeslots = (token, timeOffSetParam = 5) => {
     return async dispatch => {
         try {
-            const timeslots = await tokenRequest(token).get(baseUrl)
+            const timeslots = await tokenRequest(token).get(baseUrl, {params: {timeOffSet: timeOffSetParam}})
             const timeslotsData = timeslots.data
 
             //refresh user list

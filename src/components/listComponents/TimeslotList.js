@@ -23,16 +23,6 @@ function TimeslotList() {
     const token = useSelector(state => state.login.token)
 
 
-    useEffect(() => {
-        if (token) {
-            dispatch(getTimeslots(token))
-
-            dispatch(getRoleList(token))
-            dispatch(getUserInformation(token))
-            dispatch(getTimeslotCategoryList(token))
-        }
-    }, [dispatch, token])
-
     const sortOptions = [
         {
             value: "startTime",
@@ -53,9 +43,24 @@ function TimeslotList() {
     ]
 
     const [sortOption, setSortOption] = useState(sortOptions[0].value)
+    const [timeOffSet, setTimeOffSet] = useState(5)
+
+    useEffect(() => {
+        if (token) {
+            dispatch(getTimeslots(token, timeOffSet))
+
+            dispatch(getRoleList(token))
+            dispatch(getUserInformation(token))
+            dispatch(getTimeslotCategoryList(token))
+        }
+    }, [dispatch, token, timeOffSet])
 
     const onSelectSortChange = (event) => {
         setSortOption(event.target.value)
+    }
+
+    const onSelectTimeOffSetChange = (event) => {
+        setTimeOffSet(event.target.value)
     }
 
     const errorText = (errorCode, errorInfo = "") => {
@@ -91,6 +96,9 @@ function TimeslotList() {
                         return <option key={option.value} value={option.value}>{option.name}</option>
                     })}
                 </select>
+                
+                <input type="number" onChange={onSelectTimeOffSetChange} value={timeOffSet}>
+                </input>
                 {errorCodeFormatting(timeslotStatus.errorCode, errorText, timeslotStatus.errorInfo)}
                 
                 {

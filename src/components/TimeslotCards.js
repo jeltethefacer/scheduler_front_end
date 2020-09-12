@@ -74,6 +74,7 @@ function TimeslotCards({ timeslots, userRoles, categories, userId, sortingOption
                 return <div></div>;
             }
 
+            
             const style = {"backgroundColor": "green"}
             const returnElement =
                 <Card key={timeslot.id} style={style} >
