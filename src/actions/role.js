@@ -8,7 +8,6 @@ export const getRoleList = () => {
             const roles = await tokenRequest().get(baseUrl)
 
             const rolesList = roles.data.roles
-            console.log("fajdf", rolesList)
             dispatch({
                 type: "ROLE_LIST",
                 data: {
